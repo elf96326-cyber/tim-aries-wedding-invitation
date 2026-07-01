@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>莊滿禛心｜電子喜帖</title>
+  <title>T&A｜莊滿禛心｜電子喜帖</title>
 
   <!-- 字體：上線後會自動載入；若離線預覽，會使用系統襯線字 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:wght@300;400;500&family=LXGW+WenKai+TC&family=Iansui&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:wght@300;400;500&family=Great+Vibes&family=LXGW+WenKai+TC&family=Iansui&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -98,7 +98,7 @@
     }
 
     .date-en{
-      margin-top:12px;
+      margin-top:36px;
       font-family:"Cormorant Garamond", "Times New Roman", serif;
       font-size:clamp(19px, 5vw, 30px);
       letter-spacing:.15em;
@@ -107,12 +107,22 @@
 
     .caption{
       font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
-      margin:28px auto 0;
+      margin:22px auto 0;
       font-size:clamp(15px, 4vw, 17px);
       font-weight:300;
-      line-height:2.05;
-      letter-spacing:.08em;
+      line-height:1.75;
+      letter-spacing:.07em;
       color:#745d4b;
+    }
+
+    .open-tip{
+      margin-top:16px;
+      margin-bottom:0;
+      font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
+      font-size:13px;
+      color:#a79684;
+      letter-spacing:.06em;
+      line-height:1.45;
     }
 
     .hero-photo{
@@ -127,7 +137,7 @@
     }
 
     .hero-photo-bottom{
-      margin-top:32px;
+      margin-top:30px;
       margin-bottom:0;
     }
 
@@ -136,25 +146,31 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(to bottom, rgba(248,243,235,.08), rgba(92,61,42,.20)),
-        linear-gradient(135deg, rgba(199,164,106,.12), rgba(255,255,255,0));
+        linear-gradient(rgba(248,244,238,.14), rgba(248,244,238,.14));
       pointer-events:none;
     }
 
-    .hero-photo img,
+    .hero-photo img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+      filter:brightness(1.03) contrast(.98) saturate(1.02) sepia(.02);
+    }
+
     .wide-photo img{
       width:100%;
       height:100%;
       display:block;
       object-fit:cover;
-      filter:saturate(.88) contrast(.96) sepia(.07);
+      filter:brightness(1.03) contrast(.98) saturate(1.02) sepia(.02);
     }
 
     .ghost-button{
       appearance:none;
       border:0;
       background:transparent;
-      margin-top:28px;
+      margin-top:12px;
       padding:13px 6px 15px;
       min-width:190px;
       color:#785f4c;
@@ -210,8 +226,8 @@
       font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
       font-size:clamp(18px, 4.5vw, 22px);
       font-weight:300;
-      line-height:2.15;
-      letter-spacing:.12em;
+      line-height:1.8;
+      letter-spacing:.10em;
       color:#6a5242;
       margin-bottom:34px;
     }
@@ -233,6 +249,24 @@
     }
 
     .name-input::placeholder{ color:#b8a18b; }
+
+    .name-error{
+    min-height:22px;
+    margin-top:12px;
+    margin-bottom:8px;
+
+    color:#b56565;
+    font-size:14px;
+    letter-spacing:.08em;
+    line-height:1.6;
+
+    opacity:0;
+    transition:.25s ease;
+}
+
+.name-error.show{
+    opacity:1;
+}
 
     .invite-scroll{
       width:min(92vw, 560px);
@@ -277,19 +311,54 @@
       margin:0 auto 34px;
       font-size:clamp(15px, 4vw, 17px);
       font-weight:300;
-      line-height:2.15;
-      letter-spacing:.08em;
+      line-height:1.8;
+      letter-spacing:.07em;
       color:#6f5645;
     }
 
+    .cover-signature{
+      margin-top:10px;
+      color:var(--gold);
+      text-align:center;
+    }
+
+    .cover-signature .line1{
+      font-family:"Great Vibes", cursive;
+      font-size:clamp(68px,16vw,100px);
+      line-height:1;
+      font-weight:400;
+      letter-spacing:0;
+      color:var(--gold);
+    }
+
+    .cover-signature .line2{
+      margin-top:14px;
+      font-family:"Cinzel", serif;
+      font-size:clamp(13px,3vw,16px);
+      letter-spacing:.38em;
+      text-transform:uppercase;
+      color:#b8945d;
+      line-height:1.6;
+    }
+
     .wide-photo{
-      width:100%;
-      aspect-ratio:16 / 10;
+      width:min(78vw,340px);
+      aspect-ratio:4 / 5;
       border-radius:28px;
       overflow:hidden;
+      position:relative;
       margin:30px auto 34px;
       background:#eadfce;
-      box-shadow:0 18px 42px rgba(95,68,42,.10);
+      box-shadow:0 18px 46px rgba(90,60,35,.12);
+    }
+
+    .wide-photo::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(rgba(248,244,238,.14), rgba(248,244,238,.14));
+      pointer-events:none;
     }
 
     .wedding-title{
@@ -302,11 +371,11 @@
 
     .venue-address{
     font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
-    margin-top:8px;
+    margin-top:6px;
     font-size:14px;
     color:#8c7766;
-    line-height:1.8;
-    letter-spacing:.04em;
+    line-height:1.6;
+    letter-spacing:.035em;
 }
 
     .traffic-info{
@@ -355,7 +424,7 @@
     .traffic-text{
       font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
       font-size:14.5px;
-      line-height:1.9;
+      line-height:1.65;
       color:#7a6554;
       letter-spacing:.045em;
       font-weight:300;
@@ -378,9 +447,9 @@
 
     .traffic-note{
       font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
-      margin-top:16px;
+      margin-top:14px;
       font-size:13px;
-      line-height:1.8;
+      line-height:1.6;
       color:#9a8370;
       letter-spacing:.04em;
     }
@@ -415,8 +484,8 @@
       margin-top:30px;
       font-size:clamp(15px, 4vw, 17px);
       font-weight:300;
-      line-height:2;
-      letter-spacing:.08em;
+      line-height:1.8;
+      letter-spacing:.07em;
       color:#745d4b;
     }
 
@@ -427,6 +496,33 @@
       font-size:15px;
       letter-spacing:.18em;
       line-height:1.8;
+    }
+
+    .final-slogan{
+      margin-top:28px;
+      font-family:"Cinzel", "Times New Roman", serif;
+      color:var(--gold);
+      line-height:1.65;
+      letter-spacing:.16em;
+    }
+
+    .final-slogan .with-love{
+      font-size:13px;
+      letter-spacing:.22em;
+      color:#b8945d;
+      margin-bottom:6px;
+    }
+
+    .final-slogan .slogan-name{
+      font-size:15px;
+      letter-spacing:.18em;
+    }
+
+    .final-slogan .slogan-line{
+      margin-top:2px;
+      font-size:12px;
+      letter-spacing:.24em;
+      color:#b8945d;
     }
 
     .seal{
@@ -474,8 +570,11 @@
       .brand-cn{ letter-spacing:.06em; text-indent:.06em; }
       .invite-paper{ padding:38px 22px 36px; border-radius:30px; }
       .invite-paper::before{ inset:14px; border-radius:24px; }
-      .wide-photo{ border-radius:22px; }
+      .wide-photo{ width:min(76vw,320px); border-radius:24px; }
       .caption, .invite-text, .ending{ letter-spacing:.055em; }
+      .cover-signature .line1{ font-size:clamp(62px,18vw,92px); }
+      .cover-signature .line2{ letter-spacing:.30em; font-size:clamp(12px,3.4vw,15px); }
+      .final-slogan .slogan-line{ letter-spacing:.18em; }
     }
   </style>
 </head>
@@ -484,8 +583,10 @@
   <!-- ① 開場 -->
   <section class="page active" id="opening">
     <main class="shell">
-      <div class="brand-cn fade-up d1">莊滿禛心</div>
-      <div class="brand-en fade-up d1">Tim × Aries</div>
+      <div class="cover-signature fade-up d1">
+  <div class="line1">Tim &amp; Aries</div>
+  <div class="line2">Together &amp; Always</div>
+</div>
       <div class="date-en fade-up d2">2026.12.19</div>
       <div class="fine-line fade-up d2"></div>
 
@@ -498,6 +599,8 @@
         <img src="cover.jpg" alt="Tim and Aries wedding photo">
       </div>
 
+      <div class="open-tip fade-up d4">輕觸開啟專屬邀請函</div>
+
       <button class="ghost-button fade-up d4" onclick="goToNamePage()">開啟邀請函 →</button>
     </main>
   </section>
@@ -509,14 +612,24 @@
       <div class="fine-line fade-up d1"></div>
 
       <p class="name-copy fade-up d2">
-        這封邀請函，<br>
-        想親自送給您。
+        有一份喜悅，<br>
+        想親自與您分享。
       </p>
 
-      <input class="name-input fade-up d3" id="guestName" type="text" placeholder="請輸入您的名字" />
+      <input
+    class="name-input fade-up d3"
+    id="guestName"
+    type="text"
+    placeholder="請輸入您的名字"
+    autocomplete="off"
+/>
 
-      <br>
-      <button class="ghost-button fade-up d4" onclick="showInvite()">開始閱讀 →</button>
+<div id="nameError" class="name-error"></div>
+
+<button class="ghost-button fade-up d4" onclick="showInvite()">
+    開始閱讀 →
+</button>
+
     </main>
   </section>
 
@@ -528,9 +641,8 @@
           <div class="dear fade-up d1" id="dearText">Dear</div>
 
           <p class="invite-text fade-up d2">
-            很開心能邀請您，<br>
-            一起見證我們人生中<br>
-            最重要的一天。
+            一路走來，<br>每一個重要時刻都有珍貴的人陪伴<br>
+            而這一天，希望您也在我們身邊<br>
           </p>
 
           <div class="fine-line fade-up d2"></div>
@@ -577,7 +689,7 @@
                   target="_blank"
                   rel="noopener"
                   class="traffic-link">
-                  點擊連結直接導航 →
+                  點擊直接導航 →
                 </a>
               </div>
 
@@ -597,7 +709,7 @@
             </div>
 
             <div class="traffic-note">
-              建議賓客提早出發，預留停車與步行時間。
+              建議賓客們提早出發，預留停車與步行時間。
             </div>
           </div>
 
@@ -606,13 +718,14 @@
           </div>
 
           <p class="ending fade-up d4" id="endingText">
-            期待在這一天，<br>
-            與您共享這份幸福。
+            謝謝您陪我們一起，<br>
+            把這一天變成一生的回憶。
           </p>
 
-          <div class="signature fade-up d4">
-            With Love<br>
-            Tim & Aries
+          <div class="final-slogan fade-up d4">
+            <div class="with-love">With Love</div>
+            <div class="slogan-name">Tim &amp; Aries</div>
+            <div class="slogan-line">Together &amp; Always</div>
           </div>
 
           <div class="seal fade-up d4">囍</div>
@@ -646,16 +759,34 @@
 
     function showInvite() {
       const input = document.getElementById("guestName");
-      const name = input.value.trim() || "親愛的您";
+      const error = document.getElementById("nameError");
+      const name = input.value.trim();
+
+      if (name === "") {
+        error.textContent = "輸入您的名字，讓這份邀請正式開始✨";
+        error.classList.add("show");
+        input.focus();
+        return;
+      }
+
+      error.textContent = "";
+      error.classList.remove("show");
 
       document.getElementById("dearText").textContent = `Dear ${name}`;
-      document.getElementById("endingText").innerHTML = `期待在這一天，<br>與 ${name} 相見。`;
+      document.getElementById("endingText").innerHTML =
+        `好久不見，${name}。<br>我們婚禮那天見。`;
 
       showPage("invitePage");
     }
 
     document.getElementById("guestName").addEventListener("keydown", function(e) {
       if (e.key === "Enter") showInvite();
+    });
+
+    document.getElementById("guestName").addEventListener("input", function() {
+      const error = document.getElementById("nameError");
+      error.textContent = "";
+      error.classList.remove("show");
     });
   </script>
 </body>
