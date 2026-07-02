@@ -24,7 +24,7 @@
 
     *{ box-sizing:border-box; }
 
-    html{ scroll-behavior:smooth; }
+    html{ scroll-behavior:auto; }
 
     body{
       margin:0;
@@ -1079,26 +1079,23 @@
   </section>
 
   <script>
-    if ("scrollRestoration" in history) {
-      history.scrollRestoration = "manual";
-    }
+    window.history.scrollRestoration = "manual";
 
-    function scrollToTopInstant() {
+    function resetScrollTop() {
       window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
     }
 
-    window.addEventListener("pageshow", () => {
-      scrollToTopInstant();
-      setTimeout(scrollToTopInstant, 50);
-      setTimeout(scrollToTopInstant, 250);
+    window.addEventListener("load", () => {
+      resetScrollTop();
+      setTimeout(resetScrollTop, 50);
+      setTimeout(resetScrollTop, 150);
     });
 
-    window.addEventListener("load", () => {
-      scrollToTopInstant();
-      setTimeout(scrollToTopInstant, 50);
-      setTimeout(scrollToTopInstant, 250);
+    window.addEventListener("pageshow", () => {
+      resetScrollTop();
+      setTimeout(resetScrollTop, 50);
     });
 
     function showPage(id) {
@@ -1110,10 +1107,18 @@
     const target = document.getElementById(id);
     target.classList.add("active");
 
+    resetScrollTop();
+
     requestAnimationFrame(() => {
-        scrollToTopInstant();
-        setTimeout(scrollToTopInstant, 50);
+        resetScrollTop();
+
+        requestAnimationFrame(() => {
+            resetScrollTop();
+        });
     });
+
+    setTimeout(resetScrollTop, 80);
+    setTimeout(resetScrollTop, 180);
 
     target.querySelectorAll(".fade-up").forEach(el => {
         el.style.animation = "none";
@@ -1125,7 +1130,9 @@
     function goToNamePage() {
       showPage("namePage");
       setTimeout(() => {
-        document.getElementById("guestName").focus();
+        const input = document.getElementById("guestName");
+        input.focus({ preventScroll: true });
+        resetScrollTop();
       }, 350);
     }
 
