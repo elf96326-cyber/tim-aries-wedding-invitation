@@ -52,7 +52,8 @@
     }
 
     .page{
-      min-height:100svh;
+      min-height:100vh;
+      min-height:100dvh;
       display:none;
       align-items:center;
       justify-content:center;
@@ -1078,6 +1079,28 @@
   </section>
 
   <script>
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    function scrollToTopInstant() {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+
+    window.addEventListener("pageshow", () => {
+      scrollToTopInstant();
+      setTimeout(scrollToTopInstant, 50);
+      setTimeout(scrollToTopInstant, 250);
+    });
+
+    window.addEventListener("load", () => {
+      scrollToTopInstant();
+      setTimeout(scrollToTopInstant, 50);
+      setTimeout(scrollToTopInstant, 250);
+    });
+
     function showPage(id) {
 
     document.querySelectorAll(".page").forEach(page => {
@@ -1088,9 +1111,8 @@
     target.classList.add("active");
 
     requestAnimationFrame(() => {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        scrollToTopInstant();
+        setTimeout(scrollToTopInstant, 50);
     });
 
     target.querySelectorAll(".fade-up").forEach(el => {
