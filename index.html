@@ -24,7 +24,13 @@
 
     *{ box-sizing:border-box; }
 
-    html{ scroll-behavior:auto; }
+    html,
+    body{
+      width:100%;
+      min-height:100%;
+      overflow-x:hidden;
+      scroll-behavior:auto;
+    }
 
     body{
       margin:0;
@@ -35,7 +41,6 @@
         radial-gradient(circle at 16% 8%, rgba(255,255,255,.88), transparent 34%),
         radial-gradient(circle at 88% 18%, rgba(229,209,172,.30), transparent 32%),
         linear-gradient(135deg, #fbf6ef 0%, #f3eadc 48%, #fbf7ef 100%);
-      overflow-x:hidden;
     }
 
     body::before{
@@ -64,6 +69,11 @@
     }
 
     .page.active{ display:flex; }
+
+    /* 婚禮資訊頁內容比較長，改成從上方開始顯示 */
+    #invitePage{
+      align-items:flex-start;
+    }
 
     .shell{
       width:min(92vw, 520px);
@@ -1082,50 +1092,58 @@
     window.history.scrollRestoration = "manual";
 
     function resetScrollTop() {
-      window.scrollTo(0, 0);
+      // 同時處理電腦版與手機瀏覽器，避免切換頁面後停在上一頁的捲動位置
+      try {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      } catch (e) {
+        window.scrollTo(0, 0);
+      }
+
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
+
+      const activePage = document.querySelector(".page.active");
+      if (activePage) activePage.scrollTop = 0;
     }
 
     window.addEventListener("load", () => {
       resetScrollTop();
-      setTimeout(resetScrollTop, 50);
-      setTimeout(resetScrollTop, 150);
+      requestAnimationFrame(resetScrollTop);
+      setTimeout(resetScrollTop, 80);
     });
 
     window.addEventListener("pageshow", () => {
       resetScrollTop();
-      setTimeout(resetScrollTop, 50);
+      requestAnimationFrame(resetScrollTop);
+      setTimeout(resetScrollTop, 80);
     });
 
     function showPage(id) {
-
-    document.querySelectorAll(".page").forEach(page => {
+      document.querySelectorAll(".page").forEach(page => {
         page.classList.remove("active");
-    });
+      });
 
-    const target = document.getElementById(id);
-    target.classList.add("active");
+      const target = document.getElementById(id);
+      target.classList.add("active");
 
-    resetScrollTop();
+      // 讓瀏覽器先完成頁面切換，再強制回到最上方
+      target.offsetHeight;
+      resetScrollTop();
 
-    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
         resetScrollTop();
+        requestAnimationFrame(resetScrollTop);
+      });
 
-        requestAnimationFrame(() => {
-            resetScrollTop();
-        });
-    });
+      setTimeout(resetScrollTop, 80);
+      setTimeout(resetScrollTop, 180);
 
-    setTimeout(resetScrollTop, 80);
-    setTimeout(resetScrollTop, 180);
-
-    target.querySelectorAll(".fade-up").forEach(el => {
+      target.querySelectorAll(".fade-up").forEach(el => {
         el.style.animation = "none";
         el.offsetHeight;
         el.style.animation = "";
-    });
-}
+      });
+    }
 
     function goToNamePage() {
       showPage("namePage");
