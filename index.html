@@ -268,6 +268,30 @@
     opacity:1;
 }
 
+
+    .greeting-wrap{
+      padding:58px 20px;
+    }
+
+    .greeting-card{
+      width:min(92vw, 500px);
+      margin:auto;
+      padding:52px 26px 46px;
+      border-radius:34px;
+      background:rgba(255,253,248,.50);
+      box-shadow:0 22px 64px rgba(100,74,46,.10);
+      border:1px solid rgba(200,166,106,.22);
+      backdrop-filter:blur(5px);
+    }
+
+    .greeting-card .dear{
+      margin-bottom:18px;
+    }
+
+    .greeting-card .invite-text{
+      margin:0 auto 26px;
+    }
+
     .invite-scroll{
       width:min(92vw, 560px);
       padding:26px 0 40px;
@@ -393,20 +417,59 @@
     }
 
     .traffic-list{
-      display:grid;
-      gap:0;
-      margin:0 auto;
-      text-align:center;
-    }
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding:4px 6px 12px;
+  margin:0 -6px;
+  -webkit-overflow-scrolling:touch;
+}
 
-    .traffic-row{
-      padding:20px 8px;
-      border-top:1px solid rgba(200,166,106,.24);
-    }
+.traffic-list::-webkit-scrollbar{
+  display:none;
+}
+
+.traffic-row{
+  flex:0 0 82%;
+  scroll-snap-align:center;
+  padding:22px 18px;
+  border:1px solid rgba(200,166,106,.24);
+  border-radius:24px;
+  background:rgba(255,253,248,.58);
+  box-shadow:0 12px 32px rgba(95,68,42,.07);
+}
 
     .traffic-row:last-child{
       border-bottom:1px solid rgba(200,166,106,.24);
     }
+
+    .traffic-hint{
+  margin:-10px 0 16px;
+  font-size:13px;
+  color:#a28d79;
+  letter-spacing:.06em;
+}
+
+
+.map-preview{
+  width:100%;
+  aspect-ratio:16 / 9;
+  margin:12px auto 14px;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(200,166,106,.24);
+  background:#eadfce;
+  box-shadow:0 10px 26px rgba(95,68,42,.08);
+}
+
+.map-preview iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+  filter:saturate(.9) contrast(.96) sepia(.04);
+}
 
     .traffic-name{
       font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
@@ -453,6 +516,136 @@
       color:#9a8370;
       letter-spacing:.04em;
     }
+
+    .traffic-highlight{
+    display:block;
+    margin-top:14px;
+    color:#9f4f4f;   /* 磚紅 */
+    font-weight:500;
+    letter-spacing:.05em;
+}
+
+
+    .couple-block{
+      margin:30px auto 12px;
+      text-align:center;
+    }
+
+    .avatar-row{
+      display:flex;
+      justify-content:center;
+      gap:34px;
+      margin-bottom:24px;
+    }
+
+    .avatar-card img{
+      width:82px;
+      height:82px;
+      border-radius:50%;
+      object-fit:cover;
+      border:1px solid rgba(200,166,106,.45);
+      padding:4px;
+      background:rgba(255,253,248,.8);
+      box-shadow:0 10px 28px rgba(95,68,42,.10);
+    }
+
+    .avatar-name{
+      margin-top:10px;
+      font-family:"Cinzel", serif;
+      color:#6b4f3e;
+      font-size:15px;
+      letter-spacing:.12em;
+    }
+
+    .avatar-role{
+      margin-top:2px;
+      font-family:"Cormorant Garamond", serif;
+      color:var(--gold);
+      font-size:13px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+
+    .mini-slogan{
+      font-family:"Cinzel", serif;
+      color:var(--gold);
+      letter-spacing:.14em;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .mini-slogan span{
+      display:block;
+      font-size:11px;
+      letter-spacing:.28em;
+      color:#b8945d;
+    }
+
+    .event-info{
+    margin-top:10px;
+    text-align:center;
+}
+
+.event-date{
+    font-family:"Cormorant Garamond","LXGW WenKai TC",serif;
+    font-size:22px;
+    font-weight:400;
+    color:#6b4f3e;
+    letter-spacing:.08em;
+    line-height:1.55;
+}
+
+.event-venue{
+    margin-top:20px;
+    font-family:"Iansui", serif;
+    font-size:24px;
+    color:#6b4f3e;
+    letter-spacing:.05em;
+    line-height:1.4;
+}
+
+.event-venue-en{
+    margin-top:4px;
+    font-family:"Cormorant Garamond", serif;
+    font-size:17px;
+    font-style:italic;
+    color:#c0a16c;
+    letter-spacing:.08em;
+}
+
+.event-divider{
+    margin:24px auto 22px;
+}
+
+.event-time{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:24px;
+}
+
+.event-time strong{
+    display:block;
+    font-family:"Cormorant Garamond", serif;
+    font-size:23px;
+    font-weight:400;
+    color:#6b4f3e;
+    letter-spacing:.04em;
+}
+
+.event-time span{
+    display:block;
+    margin-top:4px;
+    font-size:14px;
+    color:#8a715f;
+    letter-spacing:.14em;
+}
+
+.time-divider{
+    width:1px;
+    height:38px;
+    background:rgba(200,166,106,.30);
+}
 
     .info-list{
       margin:28px auto 8px;
@@ -633,20 +826,33 @@
     </main>
   </section>
 
-  <!-- ③ 婚禮資訊 -->
+
+  <!-- ③ 專屬邀請 -->
+  <section class="page" id="greetingPage">
+    <main class="shell greeting-wrap">
+      <div class="greeting-card">
+        <div class="dear fade-up d1" id="greetingName">Dear</div>
+
+        <div class="fine-line fade-up d2"></div>
+
+        <p class="invite-text fade-up d3">
+          一路走來，<br>
+          因為有您的陪伴，<br>
+          才有今天的我們。
+        </p>
+
+        <button class="ghost-button fade-up d4" onclick="showPage('invitePage')">
+          閱讀邀請函 →
+        </button>
+      </div>
+    </main>
+  </section>
+
+  <!-- ④ 婚禮資訊 -->
   <section class="page" id="invitePage">
     <main class="invite-scroll">
       <article class="invite-paper">
         <div class="invite-content">
-          <div class="dear fade-up d1" id="dearText">Dear</div>
-
-          <p class="invite-text fade-up d2">
-            一路走來，<br>每一個重要時刻都有珍貴的人陪伴<br>
-            而這一天，希望您也在我們身邊<br>
-          </p>
-
-          <div class="fine-line fade-up d2"></div>
-
           <div class="wedding-title fade-up d3">
             <div class="brand-cn">莊滿禛心</div>
             <div class="brand-en">Tim × Aries</div>
@@ -654,56 +860,93 @@
 
           <div class="fine-line fade-up d3"></div>
 
-          <div class="info-list fade-up d4">
-            <div>
-              <span class="info-label">Date</span>
-              <div class="info-value">2026 年 12 月 19 日（六）</div>
-            </div>
-            <div>
-              <span class="info-label">Time</span>
-              <div class="info-value">17:00 入場｜18:00 開席</div>
-            </div>
-            <div>
-    <span class="info-label">Venue</span>
+          <div class="couple-block fade-up d4">
+            <div class="avatar-row">
+              <div class="avatar-card">
+                <img src="groom.jpg" alt="Tim">
+                <div class="avatar-name">Tim</div>
+                <div class="avatar-role">Groom</div>
+              </div>
 
-    <div class="info-value">
-        維多麗亞酒店
+              <div class="avatar-card">
+                <img src="bride.jpg" alt="Aries">
+                <div class="avatar-name">Aries</div>
+                <div class="avatar-role">Bride</div>
+              </div>
+            </div>
+
+            <div class="mini-slogan">
+              <div>Tim &amp; Aries</div>
+              <span>Together &amp; Always</span>
+            </div>
+
+            <div class="fine-line"></div>
+
+            <div class="event-info">
+
+    <div class="event-date">
+        2026 年 12 月 19 日（六）</div>
+    <div class="event-venue">維多麗亞酒店</div>
+    <div class="event-venue-en">
+        Grand Victoria Hotel
+    </div>
+    <div class="fine-line event-divider"></div>
+    <div class="event-time">
+        <div>
+            <strong>17:00</strong>
+            <span>入場</span>
+        </div>
+        <div class="time-divider"></div>
+        <div>
+            <strong>18:00</strong>
+            <span>開席</span>
+        </div>
     </div>
 
-    <div class="venue-address">
-        台北市中山區金泰里敬業四路168號
-    </div>
 </div>
-          </div>
 
           <div class="fine-line fade-up d4"></div>
 
 <div class="traffic-info fade-up d4">
             <div class="traffic-title">Traffic</div>
+            <div class="traffic-hint">左右滑動查看交通方式</div>
 
             <div class="traffic-list">
               <div class="traffic-row">
-                <div class="traffic-name">🚗 開車</div>
-                <a
-                  href="https://maps.app.goo.gl/q6UnHWpycD8v3Axw8"
-                  target="_blank"
-                  rel="noopener"
-                  class="traffic-link">
-                  點擊直接導航 →
-                </a>
-              </div>
+  <div class="traffic-name">🚗 開車</div>
+
+  <div class="map-preview">
+    <iframe
+      src="https://www.google.com/maps?q=台北市中山區金泰里敬業四路168號&output=embed"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+
+  <a
+    href="https://maps.app.goo.gl/q6UnHWpycD8v3Axw8"
+    target="_blank"
+    rel="noopener"
+    class="traffic-link">
+    點擊連結直接導航 →
+  </a>
+</div>
 
               <div class="traffic-row">
                 <div class="traffic-name">🚌 公車</div>
                 <div class="traffic-text">
-                  搭乘 28、222、247、267、268、內湖幹線（287）、620、646、72、902、紅2、藍7、藍26 等公車，於「美麗華站」下車，步行約 3 分鐘。
-                </div>
+    搭乘 28、222、247、267、268、內湖幹線（287）、620、646、72、902、紅2、藍7、藍26 等公車
+
+    <span class="traffic-highlight">
+        於「美麗華站」下車，<br>步行約 3 分鐘。
+    </span>
+</div>
               </div>
 
               <div class="traffic-row">
                 <div class="traffic-name">🚈 捷運</div>
                 <div class="traffic-text">
-                  搭乘捷運文湖線至「劍南路站」3 號出口下車。
+                  搭乘捷運文湖線<br>至「劍南路站」3 號出口下車。
                 </div>
               </div>
             </div>
@@ -736,19 +979,26 @@
 
   <script>
     function showPage(id) {
-      document.querySelectorAll(".page").forEach(page => {
+
+    document.querySelectorAll(".page").forEach(page => {
         page.classList.remove("active");
-      });
+    });
 
-      const target = document.getElementById(id);
-      target.classList.add("active");
+    const target = document.getElementById(id);
+    target.classList.add("active");
 
-      target.querySelectorAll(".fade-up").forEach(el => {
+    requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    });
+
+    target.querySelectorAll(".fade-up").forEach(el => {
         el.style.animation = "none";
         el.offsetHeight;
         el.style.animation = "";
-      });
-    }
+    });
+}
 
     function goToNamePage() {
       showPage("namePage");
@@ -772,11 +1022,11 @@
       error.textContent = "";
       error.classList.remove("show");
 
-      document.getElementById("dearText").textContent = `Dear ${name}`;
+      document.getElementById("greetingName").textContent = `Dear ${name}`;
       document.getElementById("endingText").innerHTML =
         `好久不見，${name}。<br>我們婚禮那天見。`;
 
-      showPage("invitePage");
+      showPage("greetingPage");
     }
 
     document.getElementById("guestName").addEventListener("keydown", function(e) {
