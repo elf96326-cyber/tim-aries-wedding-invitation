@@ -108,27 +108,26 @@
 
 
     .countdown{
-      margin:22px auto 20px;
-      text-align:center;
-    }
-
-    .countdown-label{
-      font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
-      font-size:14px;
-      color:#9d8a79;
-      letter-spacing:.12em;
-      line-height:1.6;
-      margin-bottom:10px;
-    }
-
-    .countdown-number{
-    display:inline-flex;
+    margin:10px auto 30px;
+    display:flex;
     justify-content:center;
     align-items:flex-end;
-    gap:6px;
+    gap:10px;
+    flex-wrap:nowrap;
+}
 
-    color:#6b4f3e;
-    line-height:1;
+.countdown-label{
+    margin:0;
+    white-space:nowrap;
+    color:#b8ab9d;
+    font-size:14px;
+    letter-spacing:.10em;
+}
+
+.countdown-number{
+    display:inline-flex;
+    align-items:flex-end;
+    gap:6px;
 }
 
 #countdownDay{
@@ -140,10 +139,10 @@
 }
 
     .countdown-unit{
-    margin:0 0 5px 0;
+    margin-bottom:4px;
     font-family:"LXGW WenKai TC","Noto Serif TC",serif;
     font-size:16px;
-    color:#b8945d;
+    color:#c8b08b;
     letter-spacing:.08em;
     line-height:1;
     white-space:nowrap;
@@ -892,13 +891,12 @@
       </div>
 
       <div class="countdown fade-up d4">
-    <div class="countdown-label">
-        距離我們相見還有</div>
+    <span class="countdown-label">距離我們相見還有</span>
 
-    <div class="countdown-number">
+    <span class="countdown-number">
         <span id="countdownDay">--</span>
         <span class="countdown-unit">天</span>
-    </div>
+    </span>
 </div>
 
       <div class="open-tip fade-up d4">輕觸開啟專屬邀請函</div>
