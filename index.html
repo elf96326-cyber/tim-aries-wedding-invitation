@@ -848,7 +848,180 @@
     .d4{ animation-delay:.60s; }
 
 
-    
+
+    /* --- 精品感加強：背景光暈、照片、卡片、按鈕細節 --- */
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.28;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.55), transparent 34%),
+        radial-gradient(circle at 50% 100%, rgba(200,166,106,.18), transparent 38%);
+      z-index:0;
+    }
+
+    .page::before{
+      content:"";
+      position:absolute;
+      inset:18px;
+      border:1px solid rgba(200,166,106,.10);
+      border-radius:34px;
+      pointer-events:none;
+      opacity:.9;
+    }
+
+    .shell,
+    .invite-scroll{
+      z-index:1;
+      position:relative;
+    }
+
+    .opening-kicker{
+      font-family:"Cinzel", serif;
+      font-size:12px;
+      letter-spacing:.34em;
+      color:#b8945d;
+      text-transform:uppercase;
+      margin-bottom:14px;
+      opacity:.86;
+    }
+
+    .soft-note{
+      margin:18px auto 0;
+      font-size:14px;
+      line-height:1.8;
+      letter-spacing:.08em;
+      color:#9a8370;
+    }
+
+    .tiny-heart{
+      margin:22px auto 2px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:26px;
+      color:rgba(200,166,106,.92);
+      line-height:1;
+    }
+
+    .mini-date{
+      margin-top:18px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:18px;
+      letter-spacing:.16em;
+      color:#b8945d;
+    }
+
+    .hero-photo{
+      border:9px solid rgba(255,253,248,.88);
+      box-shadow:
+        0 16px 40px rgba(90,60,35,.10),
+        0 2px 0 rgba(255,255,255,.72) inset;
+      transform:rotate(-.8deg);
+    }
+
+    .hero-photo::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.26), transparent 46%);
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .ghost-button{
+      overflow:hidden;
+    }
+
+    .ghost-button span{
+      display:inline-block;
+      transition:transform .32s ease;
+    }
+
+    .ghost-button:hover span{
+      transform:translateX(4px);
+    }
+
+    .greeting-card{
+      position:relative;
+    }
+
+    .greeting-card::before{
+      content:"";
+      position:absolute;
+      inset:14px;
+      border-radius:26px;
+      border:1px solid rgba(200,166,106,.18);
+      pointer-events:none;
+    }
+
+    .story-intro{
+      margin:0 auto 30px;
+      font-size:clamp(15px,4vw,17px);
+      line-height:1.9;
+      letter-spacing:.07em;
+      color:#7a6554;
+      font-weight:300;
+    }
+
+    .traffic-row{
+      transition:transform .28s ease, box-shadow .28s ease, background .28s ease;
+    }
+
+    .traffic-row:hover{
+      transform:translateY(-3px);
+      box-shadow:0 18px 42px rgba(95,68,42,.10);
+      background:rgba(255,253,248,.72);
+    }
+
+    .traffic-name{
+      flex-direction:column;
+      gap:6px;
+      font-size:17px;
+    }
+
+    .traffic-name::first-letter{
+      font-size:30px;
+      line-height:1;
+    }
+
+    .ending{
+      position:relative;
+    }
+
+    .ending::before{
+      content:"";
+      display:block;
+      width:28px;
+      height:1px;
+      margin:0 auto 20px;
+      background:rgba(200,166,106,.65);
+    }
+
+    .final-see-you{
+      margin-top:22px;
+      font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
+      font-size:14px;
+      line-height:1.7;
+      letter-spacing:.10em;
+      color:#8a715f;
+    }
+
+    @media (max-width:480px){
+      .page::before{
+        inset:10px;
+        border-radius:28px;
+      }
+
+      .hero-photo{
+        border-width:7px;
+      }
+
+      .story-intro{
+        margin-bottom:24px;
+      }
+    }
+
     @keyframes pageIn{
       from{ opacity:0; }
       to{ opacity:1; }
@@ -891,6 +1064,7 @@
   <!-- ① 開場 -->
   <section class="page active" id="opening">
     <main class="shell">
+      <div class="opening-kicker fade-up d1">Save the Date</div>
       <div class="cover-signature fade-up d1">
   <div class="line1">Tim &amp; Aries</div>
   <div class="line2">Together &amp; Always</div>
@@ -917,9 +1091,9 @@
     </span>
 </div>
 
-      <div class="open-tip fade-up d4">輕觸開啟專屬邀請函</div>
+      <div class="open-tip fade-up d4">輕觸下方開啟專屬邀請函</div>
 
-      <button class="ghost-button fade-up d4" onclick="goToNamePage()">開啟邀請函 →</button>
+      <button class="ghost-button fade-up d4" onclick="goToNamePage()"><span>開啟邀請函 →</span></button>
     </main>
   </section>
 
@@ -945,7 +1119,7 @@
 <div id="nameError" class="name-error"></div>
 
 <button class="ghost-button fade-up d4" onclick="showInvite()">
-    開始閱讀 →
+    <span>開始閱讀 →</span>
 </button>
 
     </main>
@@ -961,13 +1135,16 @@
         <div class="fine-line fade-up d2"></div>
 
         <p class="invite-text fade-up d3">
-          一路走來，<br>
-          因為有您的陪伴，<br>
-          才有今天的我們。
+          我們把一路上的美好，<br>
+          慢慢收藏成今天的幸福，<br>
+          也希望與您一起分享。
         </p>
 
+        <div class="tiny-heart fade-up d4">♡</div>
+        <div class="mini-date fade-up d4">2026.12.19</div>
+
         <button class="ghost-button fade-up d4" onclick="showPage('invitePage')">
-          閱讀邀請函 →
+          <span>閱讀邀請函 →</span>
         </button>
       </div>
     </main>
@@ -984,6 +1161,12 @@
           </div>
 
           <div class="fine-line fade-up d3"></div>
+
+          <p class="story-intro fade-up d4">
+            我們想把這一天，<br>
+            留給生命裡重要的人；<br>
+            也把最真心的邀請，交到您手上。
+          </p>
 
           <div class="couple-block fade-up d4">
             <div class="avatar-row">
@@ -1079,14 +1262,19 @@
           </div>
 
           <p class="ending fade-up d4" id="endingText">
-            謝謝您陪我們一起，<br>
-            把這一天變成一生的回憶。
+            願未來每一次相聚，<br>
+            都還能想起今天的笑容。
           </p>
 
           <div class="final-slogan fade-up d4">
             <div class="with-love">With Love</div>
             <div class="slogan-name">Tim &amp; Aries</div>
             <div class="slogan-line">Together &amp; Always</div>
+          </div>
+
+          <div class="final-see-you fade-up d4">
+            期待與您相見<br>
+            2026.12.19
           </div>
 
           <div class="seal fade-up d4">囍</div>
@@ -1173,7 +1361,7 @@
 
       document.getElementById("greetingName").textContent = `Dear ${name}`;
       document.getElementById("endingText").innerHTML =
-        `好久不見，${name}。<br>我們婚禮那天見。`;
+        `好久不見，${name}。<br>期待在婚禮那天與您相見。`;
 
       showPage("greetingPage");
     }
