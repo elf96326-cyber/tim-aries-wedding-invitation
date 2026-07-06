@@ -917,7 +917,7 @@
     </span>
 </div>
 
-      <div class="open-tip fade-up d4">點擊開啟專屬邀請函</div>
+      <div class="open-tip fade-up d4">輕觸開啟專屬邀請函</div>
 
       <button class="ghost-button fade-up d4" onclick="goToNamePage()">開啟邀請函 →</button>
     </main>
@@ -1101,20 +1101,9 @@
     function forceTop(targetPage) {
       const page = targetPage || document.querySelector(".page.active");
 
-      // 外層頁面歸零
       window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
-
-      // 每個 section 都歸零，避免手機瀏覽器保留上一頁位置
-      document.querySelectorAll(".page").forEach(p => {
-        p.scrollTop = 0;
-      });
-
-      // 婚禮資訊頁內層也一起歸零
-      document.querySelectorAll(".invite-scroll").forEach(p => {
-        p.scrollTop = 0;
-      });
 
       if (page) {
         page.scrollTop = 0;
@@ -1124,13 +1113,11 @@
     window.addEventListener("load", () => {
       forceTop();
       setTimeout(forceTop, 50);
-      setTimeout(forceTop, 250);
     });
 
     window.addEventListener("pageshow", () => {
       forceTop();
       setTimeout(forceTop, 50);
-      setTimeout(forceTop, 250);
     });
 
     function showPage(id) {
@@ -1143,11 +1130,6 @@
       });
 
       target.classList.add("active");
-
-      // 手機版避免平滑滾動造成切頁後停在前一頁位置
-      document.documentElement.style.scrollBehavior = "auto";
-      document.body.style.scrollBehavior = "auto";
-
       forceTop(target);
 
       requestAnimationFrame(() => {
@@ -1155,8 +1137,8 @@
         requestAnimationFrame(() => forceTop(target));
       });
 
-      setTimeout(() => forceTop(target), 100);
-      setTimeout(() => forceTop(target), 300);
+      setTimeout(() => forceTop(target), 80);
+      setTimeout(() => forceTop(target), 180);
 
       target.querySelectorAll(".fade-up").forEach(el => {
         el.style.animation = "none";
@@ -1167,9 +1149,9 @@
 
     function goToNamePage() {
       showPage("namePage");
-
-      // 手機瀏覽器 focus input 會自動把畫面拉到輸入框位置，所以這裡先不自動 focus
       setTimeout(() => {
+        const input = document.getElementById("guestName");
+        input.focus({ preventScroll: true });
         forceTop(document.getElementById("namePage"));
       }, 350);
     }
