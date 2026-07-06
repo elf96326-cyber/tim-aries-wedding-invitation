@@ -1057,10 +1057,132 @@
       .avatar-name{ font-size:14px; letter-spacing:.12em; }
       .final-slogan .slogan-line{ letter-spacing:.18em; }
     }
+
+    /* ========= Loading ========= */
+
+#loadingScreen{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.6), transparent 40%),
+        linear-gradient(135deg,#fbf6ef,#f3eadc,#fbf7ef);
+
+    transition:opacity .8s ease;
+}
+
+#loadingScreen.hide{
+    opacity:0;
+    pointer-events:none;
+}
+
+.loading-content{
+    text-align:center;
+}
+
+.loading-heart{
+    font-size:28px;
+    color:#c8a66a;
+    margin-bottom:18px;
+}
+
+.loading-title{
+
+    font-family:"Great Vibes",cursive;
+    font-size:58px;
+    color:#c8a66a;
+
+}
+
+.loading-subtitle{
+
+    margin-top:8px;
+
+    font-family:"Cinzel",serif;
+
+    letter-spacing:.35em;
+
+    font-size:13px;
+
+    color:#b8945d;
+
+}
+
+.loading-date{
+
+    margin-top:22px;
+
+    color:#8a715f;
+
+    letter-spacing:.25em;
+
+    font-size:14px;
+
+}
+
+.loading-line{
+    width:190px;          /* 稍微加長 */
+    height:6px;           /* 加粗 */
+    margin:36px auto 0;
+    background:#ede4d6;
+    border-radius:999px;
+    overflow:hidden;
+    box-shadow:inset 0 1px 2px rgba(0,0,0,.06);
+
+}
+
+.loading-line span{
+    display:block;
+    height:100%;
+    width:0;
+    border-radius:999px;
+    background:linear-gradient(
+        90deg,
+        #d8bc86 0%,
+        #c8a66a 50%,
+        #e4c98f 100%
+    );
+    animation:loadingBar 1.6s ease forwards;
+
+}
+
+@keyframes loadingBar{
+    from{
+        width:0;
+    }
+    to{
+        width:100%;
+    }
+}
   </style>
 </head>
 
 <body>
+
+  <div id="loadingScreen">
+    <div class="loading-content">
+        <div class="loading-heart">♡</div>
+        <div class="loading-title">
+            Tim &amp; Aries
+        </div>
+        <div class="loading-subtitle">
+            Together &amp; Always
+        </div>
+        <div class="loading-date">
+            2026.12.19
+        </div>
+        <div class="loading-line">
+            <span></span>
+        </div>
+    </div>
+</div>
+
+
   <!-- ① 開場 -->
   <section class="page active" id="opening">
     <main class="shell">
@@ -1387,6 +1509,22 @@
       error.textContent = "";
       error.classList.remove("show");
     });
+
+    window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+        const loading = document.getElementById("loadingScreen");
+
+        loading.classList.add("hide");
+
+        setTimeout(() => {
+            loading.remove();
+        },800);
+
+    },1600);
+
+});
   </script>
 </body>
 </html>
