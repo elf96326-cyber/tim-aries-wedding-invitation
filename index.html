@@ -1164,6 +1164,20 @@
 #loadingScreen.hide{
     opacity:0;
     pointer-events:none;
+    visibility:hidden;
+}
+
+#loadingScreen.ready{
+    cursor:pointer;
+}
+
+#loadingScreen.ready .loading-ready{
+    opacity:1;
+    transform:translateY(0);
+}
+
+#loadingScreen.ready .loading-heart{
+    animation:softPulse 1.4s ease-in-out infinite;
 }
 
 .loading-content{
@@ -1232,8 +1246,41 @@
         #c8a66a 50%,
         #e4c98f 100%
     );
-    animation:loadingBar 1.6s ease forwards;
+    transition:width .08s linear;
 
+}
+
+
+.loading-percent{
+    margin-top:14px;
+    font-family:"Cinzel",serif;
+    font-size:13px;
+    letter-spacing:.18em;
+    color:#f4dfc3;
+}
+
+.loading-ready{
+    margin-top:22px;
+    font-family:"Cinzel",serif;
+    font-size:14px;
+    letter-spacing:.18em;
+    line-height:1.8;
+    color:#f2d58c;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .55s ease, transform .55s ease;
+}
+
+.loading-ready span{
+    font-family:"LXGW WenKai TC","Noto Serif TC",serif;
+    font-size:13px;
+    letter-spacing:.12em;
+    color:#f4dfc3;
+}
+
+@keyframes softPulse{
+    0%,100%{ transform:scale(1); opacity:1; }
+    50%{ transform:scale(1.08); opacity:.82; }
 }
 
 @keyframes loadingBar{
@@ -1546,18 +1593,42 @@
       opacity:.92;
     }
 
+    .fortune-shell{
+      width:min(88vw, 430px);
+      margin:0 auto;
+      padding:18px 18px 28px;
+      border-radius:34px;
+      border:1px solid rgba(240,216,148,.22);
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255,235,190,.10), transparent 34%),
+        rgba(83,25,29,.34);
+      box-shadow:
+        0 22px 60px rgba(20,5,5,.24),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      position:relative;
+    }
+
+    .fortune-shell::before{
+      content:"";
+      position:absolute;
+      inset:10px;
+      border-radius:26px;
+      border:1px solid rgba(240,216,148,.12);
+      pointer-events:none;
+    }
+
     .fortune-card{
       position:relative;
-      width:min(86vw, 410px);
-      margin:0 auto;
+      width:100%;
+      margin:0;
       padding:34px 26px 30px;
-      border-radius:32px;
+      border-radius:28px;
       background:
         radial-gradient(circle at 18% 10%, rgba(255,235,190,.16), transparent 36%),
         linear-gradient(145deg, rgba(123,42,48,.86), rgba(74,20,24,.94));
       border:1px solid rgba(240,216,148,.38);
       box-shadow:
-        0 26px 70px rgba(20,5,5,.36),
+        0 18px 48px rgba(20,5,5,.28),
         inset 0 1px 0 rgba(255,255,255,.10);
       overflow:hidden;
       animation:cardDraw .9s ease both;
@@ -1566,8 +1637,8 @@
     .fortune-card::before{
       content:"";
       position:absolute;
-      inset:14px;
-      border-radius:24px;
+      inset:8px;
+      border-radius:22px;
       border:1px solid rgba(240,216,148,.18);
       pointer-events:none;
     }
@@ -1711,77 +1782,458 @@
     }
 
     .fortune-actions{
-      margin-top:24px;
+      margin-top:22px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:2;
+    }
+
+    .fortune-actions .ghost-button{
+      min-width:150px;
+      margin-top:0;
+      font-size:14px;
+      letter-spacing:.10em;
     }
 
     .keepsake-signature{
-    margin:30px auto 4px;
-    text-align:center;
-}
+      margin:30px auto 4px;
+      text-align:center;
+    }
 
-.keepsake-name{
-    font-family:"Cinzel", serif;
-    font-size:18px;
-    letter-spacing:.18em;
-    color:#d8b56b;
-}
+    .keepsake-name{
+      font-family:"Cinzel", serif;
+      font-size:18px;
+      letter-spacing:.18em;
+      color:#d8b56b;
+    }
 
-.keepsake-line{
-    margin-top:6px;
-    font-family:"Cinzel", serif;
-    font-size:12px;
-    letter-spacing:.28em;
-    color:#c9ab75;
-    text-transform:uppercase;
-}
+    .keepsake-line{
+      margin-top:6px;
+      font-family:"Cinzel", serif;
+      font-size:12px;
+      letter-spacing:.28em;
+      color:#c9ab75;
+      text-transform:uppercase;
+    }
 
-/* 修正手機按鈕點不到 */
-.ghost-button{
-  position:relative;
-  z-index:10;
-  pointer-events:auto;
-  touch-action:manipulation;
-}
+    /* 修正手機按鈕點不到 */
+    .ghost-button{
+      position:relative;
+      z-index:10;
+      pointer-events:auto;
+      touch-action:manipulation;
+    }
 
-.ghost-button span{
-  position:relative;
-  z-index:11;
-  pointer-events:none;
-}
+    .ghost-button span{
+      position:relative;
+      z-index:11;
+      pointer-events:none;
+    }
 
-.greeting-card > *,
-.keepsake-entry > *,
-.invite-content > *{
-  position:relative;
-  z-index:2;
-}
+    .greeting-card > *,
+    .keepsake-entry > *,
+    .invite-content > *{
+      position:relative;
+      z-index:2;
+    }
 
-.greeting-card::before,
-.keepsake-entry::before,
-.keepsake-entry::after,
-.invite-paper::before,
-.page::before{
-  pointer-events:none;
-}    
+    .greeting-card::before,
+    .keepsake-entry::before,
+    .keepsake-entry::after,
+    .invite-paper::before,
+    .page::before{
+      pointer-events:none;
+    }    
 
-@keyframes cardDraw{
+    @keyframes cardDraw{
       from{ opacity:0; transform:translateY(20px) rotateY(-10deg) scale(.96); }
       to{ opacity:1; transform:translateY(0) rotateY(0) scale(1); }
     }
 
     @media (max-width:480px){
+      .fortune-shell{
+        width:min(90vw, 390px);
+        padding:14px 14px 24px;
+        border-radius:30px;
+      }
+
       .fortune-card{
         padding:30px 22px 28px;
-        border-radius:28px;
+        border-radius:24px;
       }
+
+      .fortune-card::before{
+        border-radius:20px;
+      }
+
       .card-meta{
         gap:10px;
       }
+
       .meta-box{
         padding:12px 8px;
       }
+
       .fortune-row{
         font-size:12.5px;
+      }
+
+      .fortune-actions{
+        gap:10px;
+      }
+
+      .fortune-actions .ghost-button{
+        min-width:138px;
+        font-size:13px;
+        padding-left:4px;
+        padding-right:4px;
+      }
+    }
+
+
+    /* ========= Dear 頁進度條 ========= */
+    .greeting-progress{
+      width:min(210px, 62vw);
+      height:6px;
+      margin:26px auto 0;
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,244,225,.14);
+      box-shadow:inset 0 1px 2px rgba(0,0,0,.22);
+    }
+
+    .greeting-progress span{
+      display:block;
+      width:0;
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg,#c99a3e 0%, #f0d894 48%, #c99a3e 100%);
+    }
+
+
+    /* ========= 點擊穩定修正 ========= */
+    .page{
+      pointer-events:none;
+    }
+
+    .page.active{
+      pointer-events:auto;
+      z-index:2;
+    }
+
+    button,
+    a,
+    input{
+      touch-action:manipulation;
+    }
+
+
+
+    /* ========= 修正版：單框精品版 + 背景一致 ========= */
+    body::after{
+      display:none;
+    }
+
+    .page::before{
+      display:none;
+    }
+
+    .fortune-wrap{
+      width:min(92vw, 520px);
+      margin:auto;
+      padding:34px 0;
+    }
+
+    .fortune-shell{
+      width:min(88vw, 430px);
+      margin:0 auto;
+      padding:0;
+      border:none;
+      background:transparent;
+      box-shadow:none;
+      position:relative;
+    }
+
+    .fortune-shell::before{
+      display:none !important;
+    }
+
+    .fortune-card{
+      width:100%;
+      margin:0 auto;
+      padding:34px 26px 30px;
+      border-radius:30px;
+      border:1px solid rgba(240,216,148,.38);
+      background:
+        radial-gradient(circle at 18% 10%, rgba(255,235,190,.14), transparent 36%),
+        linear-gradient(145deg, rgba(123,42,48,.86), rgba(74,20,24,.94));
+      box-shadow:
+        0 22px 58px rgba(20,5,5,.30),
+        inset 0 1px 0 rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+
+    .fortune-card::before{
+      display:none !important;
+    }
+
+    .fortune-actions{
+      margin:22px auto 0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:2;
+    }
+
+    .fortune-actions .ghost-button{
+      min-width:150px;
+      margin-top:0;
+      font-size:14px;
+      letter-spacing:.10em;
+    }
+
+    .keepsake-signature{
+      margin:28px auto 4px;
+      text-align:center;
+    }
+
+    @media (max-width:480px){
+      .fortune-shell{
+        width:min(90vw, 390px);
+        padding:0;
+        border:none;
+        background:transparent;
+        box-shadow:none;
+      }
+
+      .fortune-card{
+        padding:30px 22px 28px;
+        border-radius:26px;
+      }
+
+      .fortune-actions{
+        gap:10px;
+        margin-top:20px;
+      }
+
+      .fortune-actions .ghost-button{
+        min-width:138px;
+        font-size:13px;
+        padding-left:4px;
+        padding-right:4px;
+      }
+    }
+
+
+    /* ========= 修正版：紀念卡區塊改為酒紅精品卡 ========= */
+    .keepsake-entry{
+      width:min(92%, 420px);
+      margin:38px auto 10px;
+      padding:40px 30px 38px;
+      border-radius:32px;
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(255,231,181,.13), transparent 42%),
+        linear-gradient(145deg, rgba(123,42,48,.88), rgba(74,20,24,.96));
+      border:1px solid rgba(240,216,148,.30);
+      box-shadow:
+        0 22px 58px rgba(20,5,5,.34),
+        inset 0 1px 0 rgba(255,255,255,.09);
+    }
+
+    .keepsake-entry::before{
+      content:"";
+      position:absolute;
+      inset:14px;
+      border-radius:24px;
+      border:1px solid rgba(240,216,148,.13);
+      pointer-events:none;
+    }
+
+    .keepsake-entry::after{
+      content:"囍";
+      position:absolute;
+      right:18px;
+      bottom:10px;
+      font-family:"Iansui", serif;
+      font-size:62px;
+      line-height:1;
+      color:rgba(240,216,148,.075);
+      pointer-events:none;
+    }
+
+    .keepsake-heart{
+      font-family:"Cormorant Garamond", serif;
+      font-size:34px;
+      line-height:1;
+      color:#f0d894;
+      margin:0 auto 16px;
+      text-shadow:0 8px 24px rgba(0,0,0,.18);
+    }
+
+    .keepsake-title{
+      font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
+      font-size:17px;
+      letter-spacing:.14em;
+      color:#ffe6b8;
+      margin-bottom:16px;
+      font-weight:400;
+    }
+
+    .keepsake-entry p{
+      margin:0 auto 24px;
+      font-size:14.5px;
+      line-height:1.9;
+      letter-spacing:.07em;
+      color:#f4dfc3;
+    }
+
+    .keepsake-entry .ghost-button{
+      margin-top:4px;
+      min-width:210px;
+      padding:13px 20px 15px;
+      border-radius:999px;
+      background:linear-gradient(135deg, #cda45f 0%, #b88946 52%, #e0bd72 100%);
+      color:#fff9ef;
+      box-shadow:
+        0 12px 28px rgba(20,5,5,.22),
+        0 8px 24px rgba(201,155,70,.18);
+      text-shadow:0 1px 0 rgba(90,55,10,.20);
+    }
+
+    .keepsake-entry .ghost-button::before,
+    .keepsake-entry .ghost-button::after{
+      display:none;
+    }
+
+    .keepsake-entry .ghost-button:hover{
+      color:#fff;
+      transform:translateY(-2px);
+      box-shadow:
+        0 16px 34px rgba(20,5,5,.26),
+        0 10px 28px rgba(201,155,70,.24);
+    }
+
+    @media (max-width:480px){
+      .keepsake-entry{
+        width:min(94%, 390px);
+        padding:36px 24px 34px;
+        border-radius:30px;
+      }
+
+      .keepsake-entry::before{
+        inset:12px;
+        border-radius:22px;
+      }
+    }
+
+
+    /* ========= 最終精修：全站框線減量，讓邀請函更乾淨 ========= */
+    /* 1) 移除頁面外層裝飾框，避免背景被切成很多層 */
+    .page::before,
+    #loadingScreen::before,
+    #loadingScreen::after{
+      display:none !important;
+    }
+
+    /* 2) 邀請函主卡只保留一個外框，拿掉內層框 */
+    .invite-paper{
+      border:1px solid rgba(240,216,148,.20);
+      border-radius:34px;
+      background:rgba(83,25,29,.58);
+      box-shadow:0 24px 64px rgba(20,5,5,.28);
+      overflow:hidden;
+    }
+
+    .invite-paper::before{
+      display:none !important;
+    }
+
+    /* 3) Dear 頁也只留卡片本身，不再多一圈內框 */
+    .greeting-card::before{
+      display:none !important;
+    }
+
+    .greeting-card{
+      border:1px solid rgba(240,216,148,.20);
+      box-shadow:0 22px 56px rgba(20,5,5,.24);
+    }
+
+    /* 4) 交通卡片淡化框線，讓視覺不要太滿 */
+    .traffic-row{
+      border-color:rgba(240,216,148,.16);
+      box-shadow:0 10px 28px rgba(20,5,5,.18);
+    }
+
+    .map-preview{
+      border-color:rgba(240,216,148,.14);
+      box-shadow:0 8px 20px rgba(20,5,5,.16);
+    }
+
+    /* 5) 紀念卡只保留外框，移除內框線 */
+    .keepsake-entry::before{
+      display:none !important;
+    }
+
+    .keepsake-entry{
+      border:1px solid rgba(240,216,148,.24);
+      box-shadow:
+        0 22px 54px rgba(20,5,5,.30),
+        inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    /* 6) 幸福籤只保留卡片外框，內層框與外殼框都拿掉 */
+    .fortune-shell{
+      border:none !important;
+      background:transparent !important;
+      box-shadow:none !important;
+      padding:0 !important;
+    }
+
+    .fortune-shell::before,
+    .fortune-card::before{
+      display:none !important;
+    }
+
+    .fortune-card{
+      border:1px solid rgba(240,216,148,.28);
+      box-shadow:
+        0 22px 54px rgba(20,5,5,.30),
+        inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    /* 7) 金線減量：部分區塊間距更自然 */
+    .traffic-info{
+      margin-top:32px;
+    }
+
+    .event-divider{
+      margin:22px auto 20px;
+      opacity:.75;
+    }
+
+    /* 8) 手機版同步乾淨化 */
+    @media (max-width:480px){
+      .invite-paper{
+        border-radius:30px;
+        border-color:rgba(240,216,148,.18);
+        box-shadow:0 20px 52px rgba(20,5,5,.26);
+      }
+
+      .keepsake-entry{
+        border-color:rgba(240,216,148,.22);
+      }
+
+      .fortune-card{
+        border-color:rgba(240,216,148,.24);
       }
     }
 
@@ -1803,8 +2255,9 @@
             2026.12.19
         </div>
         <div class="loading-line">
-            <span></span>
+            <span id="loadingBar"></span>
         </div>
+        <div class="loading-percent" id="loadingPercent">0%</div>
     </div>
 </div>
 
@@ -1841,7 +2294,7 @@
 
       <div class="open-tip fade-up d4">輕觸下方開啟專屬邀請函</div>
 
-      <button class="ghost-button fade-up d4" onclick="goToNamePage()"><span>開啟邀請函 →</span></button>
+      <button type="button" class="ghost-button fade-up d4" onclick="goToNamePage()"><span>開啟邀請函 →</span></button>
     </main>
   </section>
 
@@ -1866,7 +2319,7 @@
 
 <div id="nameError" class="name-error"></div>
 
-<button class="ghost-button fade-up d4" onclick="showInvite()">
+<button type="button" class="ghost-button fade-up d4" onclick="showInvite()">
     <span>開始閱讀 →</span>
 </button>
 
@@ -1879,52 +2332,63 @@
   <!-- ③ 專屬邀請卡 / 幸福籤 -->
   <section class="page" id="fortunePage">
     <main class="fortune-wrap">
-      <div class="draw-kicker fade-up d1">Wedding Keepsake</div>
 
-      <div class="fortune-card fade-up d2">
-        <div class="card-topline">
-          <span>Wedding Invitation</span>
-          <span id="guestCardNo">No.---</span>
+      <div class="fortune-shell fade-up d2">
+        <div class="fortune-card">
+          <div class="card-topline">
+            <span>Wedding Invitation</span>
+            <span id="guestCardNo">No.---</span>
+          </div>
+
+          <div class="card-heart">♡</div>
+          <div class="card-title">Special Guest</div>
+          <div class="card-name" id="cardGuestName">Guest</div>
+
+          <div class="card-meta">
+            <div class="meta-box">
+              <span class="meta-label">入場資格</span>
+              <span class="meta-value">已解鎖</span>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">相聚日</span>
+              <span class="meta-value">2026.12.19</span>
+            </div>
+          </div>
+
+          <div class="fortune-divider"></div>
+
+          <div class="blessing-label">喜氣小籤</div>
+          <div class="blessing-title" id="blessingTitle">今日祝福</div>
+          <p class="blessing-text" id="blessingText">
+            願今天的你，<br>
+            帶著笑容赴約，<br>
+            帶著幸福回家。
+          </p>
+
+          <div class="fortune-grid">
+            <div class="fortune-row">
+              <span>小幸運</span>
+              <span class="fortune-stars" id="fortuneHappiness">★★★★★</span>
+            </div>
+            <div class="fortune-row">
+              <span>桃花運</span>
+              <span class="fortune-stars" id="fortuneDessert">★★★★☆</span>
+            </div>
+            <div class="fortune-row">
+              <span>貴人運</span>
+              <span class="fortune-stars" id="fortunePhoto">★★★★★</span>
+            </div>
+          </div>
         </div>
 
-        <div class="card-heart">♡</div>
-        <div class="card-title">Special Guest</div>
-        <div class="card-name" id="cardGuestName">Guest</div>
+        <div class="fortune-actions">
+          <button type="button" class="ghost-button" onclick="drawRandomWeddingCard()">
+            <span>再抽一張喜氣小籤 →</span>
+          </button>
 
-        <div class="card-meta">
-          <div class="meta-box">
-            <span class="meta-label">Status</span>
-            <span class="meta-value">Invited</span>
-          </div>
-          <div class="meta-box">
-            <span class="meta-label">Date</span>
-            <span class="meta-value">2026.12.19</span>
-          </div>
-        </div>
-
-        <div class="fortune-divider"></div>
-
-        <div class="blessing-label">幸福籤</div>
-        <div class="blessing-title" id="blessingTitle">今日祝福</div>
-        <p class="blessing-text" id="blessingText">
-          願今天的你，<br>
-          帶著笑容赴約，<br>
-          帶著幸福回家。
-        </p>
-
-        <div class="fortune-grid">
-          <div class="fortune-row">
-            <span>幸福值</span>
-            <span class="fortune-stars" id="fortuneHappiness">★★★★★</span>
-          </div>
-          <div class="fortune-row">
-            <span>甜點運</span>
-            <span class="fortune-stars" id="fortuneDessert">★★★★☆</span>
-          </div>
-          <div class="fortune-row">
-            <span>拍照運</span>
-            <span class="fortune-stars" id="fortunePhoto">★★★★★</span>
-          </div>
+          <button type="button" class="ghost-button" onclick="showPage('invitePage')">
+            <span>回到邀請函 ↑</span>
+          </button>
         </div>
       </div>
 
@@ -1934,20 +2398,12 @@
         <div class="keepsake-line">Together &amp; Always</div>
       </div>
 
-      <div class="fortune-actions fade-up d4">
-        <button class="ghost-button" onclick="drawRandomWeddingCard()">
-          <span>再抽一張幸福籤 →</span>
-        </button>
-        <button class="ghost-button" onclick="showPage('invitePage')">
-          <span>回到邀請函 ↑</span>
-        </button>
-      </div>
     </main>
   </section>
 
 
 
-  
+
   <!-- ④ 專屬邀請 -->
   <section class="page" id="greetingPage">
     <main class="shell greeting-wrap">
@@ -1965,9 +2421,9 @@
         <div class="tiny-heart fade-up d4">♡</div>
         <div class="mini-date fade-up d4">2026.12.19</div>
 
-        <button class="ghost-button fade-up d4" onclick="showPage('invitePage')">
-          <span>閱讀邀請函 →</span>
-        </button>
+        <div class="greeting-progress fade-up d4" aria-hidden="true">
+          <span id="greetingProgressBar"></span>
+        </div>
       </div>
     </main>
   </section>
@@ -2091,10 +2547,10 @@
 
           <div class="keepsake-entry fade-up d4">
             <div class="keepsake-heart">♡</div>
-            <div class="keepsake-title">給看到這裡的您</div>
-            <p>我們準備了一張專屬婚禮紀念卡，<br>和一支隨機幸福籤。</p>
-            <button class="ghost-button" onclick="openFortuneFromInvite()">
-              <span>領取專屬紀念卡 →</span>
+            <div class="keepsake-title">留給你的小驚喜</div>
+            <p>我們偷偷準備了一張<br>婚禮限定紀念卡，<br>還有一支隨機喜氣小籤，<br>等著你來領取。</p>
+            <button type="button" class="ghost-button" onclick="openFortuneFromInvite()">
+              <span>領取紀念卡 →</span>
             </button>
           </div>
 
@@ -2243,13 +2699,32 @@
       document.getElementById("endingText").innerHTML =
         `好久不見，${name}。<br>期待在婚禮那天與您相見。`;
 
+      input.blur();
       currentGuestName = name;
 
       showPage("greetingPage");
+      runGreetingProgress();
+    }
+
+    function runGreetingProgress() {
+      const bar = document.getElementById("greetingProgressBar");
+      if (!bar) {
+        setTimeout(() => showPage("invitePage"), 1800);
+        return;
+      }
+
+      bar.style.transition = "none";
+      bar.style.width = "0%";
+      void bar.offsetWidth;
+
+      requestAnimationFrame(() => {
+        bar.style.transition = "width 1.75s ease";
+        bar.style.width = "100%";
+      });
 
       setTimeout(() => {
         showPage("invitePage");
-      }, 1800);
+      }, 1900);
     }
 
 
@@ -2274,21 +2749,36 @@
       error.classList.remove("show");
     });
 
-    window.addEventListener("load", () => {
+    window.addEventListener("DOMContentLoaded", () => {
+      const loading = document.getElementById("loadingScreen");
+      const bar = document.getElementById("loadingBar");
+      const percentText = document.getElementById("loadingPercent");
 
-    setTimeout(() => {
+      if (!loading || !bar || !percentText) return;
 
-        const loading = document.getElementById("loadingScreen");
+      let percent = 0;
 
-        loading.classList.add("hide");
+      const timer = setInterval(() => {
+        percent += 2;
+        if (percent > 100) percent = 100;
 
-        setTimeout(() => {
-            loading.remove();
-        },800);
+        bar.style.width = percent + "%";
+        percentText.textContent = percent + "%";
 
-    },1600);
+        if (percent >= 100) {
+          clearInterval(timer);
 
-});
+          setTimeout(() => {
+            loading.classList.add("hide");
+
+            setTimeout(() => {
+              loading.remove();
+              forceTop(document.getElementById("opening"));
+            }, 800);
+          }, 280);
+        }
+      }, 32);
+    });
   </script>
 </body>
 </html>
