@@ -1158,13 +1158,14 @@
         radial-gradient(circle at 20% 20%, rgba(255,255,255,.6), transparent 40%),
         linear-gradient(135deg,#fbf6ef,#f3eadc,#fbf7ef);
 
-    transition:opacity .8s ease;
+    transition:opacity 1.2s ease, visibility 1.2s ease;
 }
 
 #loadingScreen.hide{
     opacity:0;
     pointer-events:none;
     visibility:hidden;
+    transition-delay:.15s;
 }
 
 #loadingScreen.ready{
