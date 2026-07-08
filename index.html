@@ -1785,6 +1785,28 @@
       }
     }
 
+
+/* ========= 修正手機第一次點擊按鈕失效 ========= */
+.page{
+  pointer-events:none;
+}
+
+.page.active{
+  pointer-events:auto;
+  z-index:2;
+}
+
+#loadingScreen.hide{
+  opacity:0;
+  pointer-events:none;
+  visibility:hidden;
+}
+
+button,
+.ghost-button{
+  -webkit-tap-highlight-color:transparent;
+}
+
   </style>
 </head>
 
@@ -1841,7 +1863,7 @@
 
       <div class="open-tip fade-up d4">輕觸下方開啟專屬邀請函</div>
 
-      <button class="ghost-button fade-up d4" onclick="goToNamePage()"><span>開啟邀請函 →</span></button>
+      <button type="button" class="ghost-button fade-up d4" onclick="goToNamePage()"><span>開啟邀請函 →</span></button>
     </main>
   </section>
 
@@ -1866,7 +1888,7 @@
 
 <div id="nameError" class="name-error"></div>
 
-<button class="ghost-button fade-up d4" onclick="showInvite()">
+<button type="button" class="ghost-button fade-up d4" onclick="showInvite()">
     <span>開始閱讀 →</span>
 </button>
 
@@ -1935,10 +1957,10 @@
       </div>
 
       <div class="fortune-actions fade-up d4">
-        <button class="ghost-button" onclick="drawRandomWeddingCard()">
+        <button type="button" class="ghost-button" onclick="drawRandomWeddingCard()">
           <span>再抽一張幸福籤 →</span>
         </button>
-        <button class="ghost-button" onclick="showPage('invitePage')">
+        <button type="button" class="ghost-button" onclick="showPage('invitePage')">
           <span>回到邀請函 ↑</span>
         </button>
       </div>
@@ -1965,7 +1987,7 @@
         <div class="tiny-heart fade-up d4">♡</div>
         <div class="mini-date fade-up d4">2026.12.19</div>
 
-        <button class="ghost-button fade-up d4" onclick="showPage('invitePage')">
+        <button type="button" class="ghost-button fade-up d4" onclick="showPage('invitePage')">
           <span>閱讀邀請函 →</span>
         </button>
       </div>
@@ -2093,7 +2115,7 @@
             <div class="keepsake-heart">♡</div>
             <div class="keepsake-title">給看到這裡的您</div>
             <p>我們準備了一張專屬婚禮紀念卡，<br>和一支隨機幸福籤。</p>
-            <button class="ghost-button" onclick="openFortuneFromInvite()">
+            <button type="button" class="ghost-button" onclick="openFortuneFromInvite()">
               <span>領取專屬紀念卡 →</span>
             </button>
           </div>
@@ -2137,6 +2159,8 @@
         page.classList.remove("active");
         page.scrollTop = 0;
       });
+
+      if (!target) return;
 
       target.classList.add("active");
       forceTop(target);
@@ -2243,6 +2267,7 @@
       document.getElementById("endingText").innerHTML =
         `好久不見，${name}。<br>期待在婚禮那天與您相見。`;
 
+      input.blur();
       currentGuestName = name;
       showPage("greetingPage");
     }
@@ -2269,21 +2294,18 @@
       error.classList.remove("show");
     });
 
-    window.addEventListener("load", () => {
-
-    setTimeout(() => {
-
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
         const loading = document.getElementById("loadingScreen");
+        if (!loading) return;
 
         loading.classList.add("hide");
 
         setTimeout(() => {
-            loading.remove();
-        },800);
-
-    },1600);
-
-});
+          loading.remove();
+        }, 800);
+      }, 1600);
+    });
   </script>
 </body>
 </html>
