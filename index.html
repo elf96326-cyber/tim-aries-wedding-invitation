@@ -1786,14 +1786,15 @@
     }
 
 
-/* ========= 修正手機第一次點擊按鈕失效 ========= */
+/* ========= 手機點擊修正：避免隱藏頁、loading、動畫吃掉第一次點擊 ========= */
 .page{
   pointer-events:none;
+  z-index:1;
 }
 
 .page.active{
   pointer-events:auto;
-  z-index:2;
+  z-index:5;
 }
 
 #loadingScreen.hide{
@@ -1802,9 +1803,15 @@
   visibility:hidden;
 }
 
-button,
 .ghost-button{
   -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+button, a, input{
+  touch-action:manipulation;
 }
 
   </style>
@@ -1863,7 +1870,7 @@ button,
 
       <div class="open-tip fade-up d4">輕觸下方開啟專屬邀請函</div>
 
-      <button type="button" class="ghost-button fade-up d4" onclick="goToNamePage()"><span>開啟邀請函 →</span></button>
+      <button type="button" id="openNameBtn" class="ghost-button fade-up d4"><span>開啟邀請函 →</span></button>
     </main>
   </section>
 
@@ -1888,7 +1895,7 @@ button,
 
 <div id="nameError" class="name-error"></div>
 
-<button type="button" class="ghost-button fade-up d4" onclick="showInvite()">
+<button type="button" id="startReadBtn" class="ghost-button fade-up d4">
     <span>開始閱讀 →</span>
 </button>
 
@@ -1957,10 +1964,10 @@ button,
       </div>
 
       <div class="fortune-actions fade-up d4">
-        <button type="button" class="ghost-button" onclick="drawRandomWeddingCard()">
+        <button type="button" id="drawCardBtn" class="ghost-button">
           <span>再抽一張幸福籤 →</span>
         </button>
-        <button type="button" class="ghost-button" onclick="showPage('invitePage')">
+        <button type="button" id="backInviteBtn" class="ghost-button">
           <span>回到邀請函 ↑</span>
         </button>
       </div>
@@ -1987,7 +1994,7 @@ button,
         <div class="tiny-heart fade-up d4">♡</div>
         <div class="mini-date fade-up d4">2026.12.19</div>
 
-        <button type="button" class="ghost-button fade-up d4" onclick="showPage('invitePage')">
+        <button type="button" id="readInviteBtn" class="ghost-button fade-up d4">
           <span>閱讀邀請函 →</span>
         </button>
       </div>
@@ -2115,7 +2122,7 @@ button,
             <div class="keepsake-heart">♡</div>
             <div class="keepsake-title">給看到這裡的您</div>
             <p>我們準備了一張專屬婚禮紀念卡，<br>和一支隨機幸福籤。</p>
-            <button type="button" class="ghost-button" onclick="openFortuneFromInvite()">
+            <button type="button" id="openFortuneBtn" class="ghost-button">
               <span>領取專屬紀念卡 →</span>
             </button>
           </div>
@@ -2154,39 +2161,41 @@ button,
     function showPage(id) {
       const pages = document.querySelectorAll(".page");
       const target = document.getElementById(id);
+      if (!target) return;
+
+      // 先把目前輸入框失焦，避免手機鍵盤收合吃掉下一次點擊
+      if (document.activeElement && typeof document.activeElement.blur === "function") {
+        document.activeElement.blur();
+      }
 
       pages.forEach(page => {
         page.classList.remove("active");
         page.scrollTop = 0;
       });
 
-      if (!target) return;
-
       target.classList.add("active");
       forceTop(target);
 
+      // 下一個 frame 再重跑動畫，避免動畫重置瞬間擋掉 click/touch
       requestAnimationFrame(() => {
+        target.querySelectorAll(".fade-up").forEach(el => {
+          el.style.animation = "none";
+          void el.offsetHeight;
+          el.style.animation = "";
+        });
+
         forceTop(target);
         requestAnimationFrame(() => forceTop(target));
       });
 
-      setTimeout(() => forceTop(target), 80);
-      setTimeout(() => forceTop(target), 180);
-
-      target.querySelectorAll(".fade-up").forEach(el => {
-        el.style.animation = "none";
-        el.offsetHeight;
-        el.style.animation = "";
-      });
+      setTimeout(() => forceTop(target), 120);
     }
 
     function goToNamePage() {
       showPage("namePage");
       setTimeout(() => {
-        const input = document.getElementById("guestName");
-        input.focus({ preventScroll: true });
         forceTop(document.getElementById("namePage"));
-      }, 350);
+      }, 120);
     }
 
 
@@ -2269,7 +2278,7 @@ button,
 
       input.blur();
       currentGuestName = name;
-      showPage("greetingPage");
+      setTimeout(() => showPage("greetingPage"), 80);
     }
 
 
@@ -2294,18 +2303,53 @@ button,
       error.classList.remove("show");
     });
 
-    window.addEventListener("DOMContentLoaded", () => {
+    function hideLoadingScreen() {
+      const loading = document.getElementById("loadingScreen");
+      if (!loading) return;
+
+      loading.classList.add("hide");
       setTimeout(() => {
-        const loading = document.getElementById("loadingScreen");
-        if (!loading) return;
+        if (loading && loading.parentNode) loading.remove();
+      }, 800);
+    }
 
-        loading.classList.add("hide");
-
-        setTimeout(() => {
-          loading.remove();
-        }, 800);
-      }, 1600);
+    // 不等圖片 / 地圖 iframe 全部載完，避免 loading 蓋住第一次點擊
+    setTimeout(hideLoadingScreen, 1600);
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(hideLoadingScreen, 1600);
     });
+    window.addEventListener("load", hideLoadingScreen);
+
+    function bindReliableTap(id, handler) {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      let touchedAt = 0;
+
+      const run = (e) => {
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+        handler();
+      };
+
+      el.addEventListener("touchend", (e) => {
+        touchedAt = Date.now();
+        run(e);
+      }, { passive:false });
+
+      el.addEventListener("click", (e) => {
+        // touchend 後瀏覽器常會補一個 click，避免重複觸發
+        if (Date.now() - touchedAt < 500) return;
+        run(e);
+      });
+    }
+
+    bindReliableTap("openNameBtn", goToNamePage);
+    bindReliableTap("startReadBtn", showInvite);
+    bindReliableTap("readInviteBtn", () => showPage("invitePage"));
+    bindReliableTap("backInviteBtn", () => showPage("invitePage"));
+    bindReliableTap("drawCardBtn", drawRandomWeddingCard);
+    bindReliableTap("openFortuneBtn", openFortuneFromInvite);
   </script>
 </body>
 </html>
