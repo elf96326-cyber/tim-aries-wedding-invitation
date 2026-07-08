@@ -1735,7 +1735,36 @@
     text-transform:uppercase;
 }
 
-    @keyframes cardDraw{
+/* 修正手機按鈕點不到 */
+.ghost-button{
+  position:relative;
+  z-index:10;
+  pointer-events:auto;
+  touch-action:manipulation;
+}
+
+.ghost-button span{
+  position:relative;
+  z-index:11;
+  pointer-events:none;
+}
+
+.greeting-card > *,
+.keepsake-entry > *,
+.invite-content > *{
+  position:relative;
+  z-index:2;
+}
+
+.greeting-card::before,
+.keepsake-entry::before,
+.keepsake-entry::after,
+.invite-paper::before,
+.page::before{
+  pointer-events:none;
+}    
+
+@keyframes cardDraw{
       from{ opacity:0; transform:translateY(20px) rotateY(-10deg) scale(.96); }
       to{ opacity:1; transform:translateY(0) rotateY(0) scale(1); }
     }
