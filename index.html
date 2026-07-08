@@ -1022,6 +1022,91 @@
       }
     }
 
+
+    .keepsake-entry{
+      width:min(92%, 420px);
+      margin:34px auto 8px;
+      padding:32px 24px 30px;
+      border-radius:30px;
+      border:1px solid rgba(240,216,148,.46);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,255,255,.72), transparent 36%),
+        linear-gradient(145deg, #fff9f1 0%, #f7e9dc 100%);
+      box-shadow:
+        0 22px 58px rgba(24,5,6,.24),
+        0 0 0 1px rgba(255,255,255,.35) inset;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .keepsake-entry::before{
+      content:"";
+      position:absolute;
+      inset:13px;
+      border-radius:23px;
+      border:1px solid rgba(199,155,70,.34);
+      pointer-events:none;
+    }
+
+    .keepsake-entry::after{
+      content:"囍";
+      position:absolute;
+      right:18px;
+      bottom:10px;
+      font-family:"Iansui", serif;
+      font-size:58px;
+      line-height:1;
+      color:rgba(123,42,48,.055);
+      pointer-events:none;
+    }
+
+    .keepsake-heart{
+      font-family:"Cormorant Garamond", serif;
+      font-size:32px;
+      line-height:1;
+      color:#c79b46;
+      margin-bottom:13px;
+      text-shadow:0 1px 0 rgba(255,255,255,.75);
+    }
+
+    .keepsake-title{
+      font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
+      font-size:16px;
+      letter-spacing:.12em;
+      color:#6d2a2e;
+      margin-bottom:13px;
+      font-weight:500;
+    }
+
+    .keepsake-entry p{
+      margin:0 auto 18px;
+      font-size:14px;
+      line-height:1.85;
+      letter-spacing:.06em;
+      color:#6c504a;
+    }
+
+    .keepsake-entry .ghost-button{
+      margin-top:4px;
+      min-width:210px;
+      padding:13px 18px 15px;
+      border-radius:999px;
+      background:linear-gradient(135deg, #d8b56b 0%, #c79b46 52%, #e6c57a 100%);
+      color:#fffaf0;
+      box-shadow:0 12px 28px rgba(123,42,48,.18), 0 8px 24px rgba(199,155,70,.22);
+      text-shadow:0 1px 0 rgba(110,70,15,.18);
+    }
+
+    .keepsake-entry .ghost-button::before,
+    .keepsake-entry .ghost-button::after{
+      display:none;
+    }
+
+    .keepsake-entry .ghost-button:hover{
+      color:#fff;
+      transform:translateY(-2px);
+    }
+
     @keyframes pageIn{
       from{ opacity:0; }
       to{ opacity:1; }
@@ -1159,6 +1244,518 @@
         width:100%;
     }
 }
+
+
+    /* ========= 整站中式紅 × 霧金重配色 ========= */
+    :root{
+      --paper:#3f1718;
+      --paper-2:#fff7ea;
+      --ink:#f8ead5;
+      --soft-ink:#e7cfa8;
+      --gold:#d9b86f;
+      --gold-light:#f0d894;
+      --wine:#7b2328;
+      --shadow:rgba(20, 5, 5, .28);
+      --deep-red:#4b181b;
+      --palace-red:#6d252a;
+      --rose-red:#8a3438;
+      --cream:#fff4e1;
+      --muted-cream:#e9d2aa;
+    }
+
+    body{
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 18% 10%, rgba(255,218,152,.16), transparent 30%),
+        radial-gradient(circle at 86% 20%, rgba(255,244,225,.08), transparent 30%),
+        radial-gradient(circle at 50% 95%, rgba(185,114,70,.22), transparent 34%),
+        linear-gradient(135deg, #3f1417 0%, #642229 48%, #471719 100%);
+    }
+
+    body::before{
+      opacity:.20;
+      background-image:
+        linear-gradient(90deg, rgba(244,216,148,.13) 1px, transparent 1px),
+        linear-gradient(rgba(244,216,148,.10) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.85), rgba(0,0,0,.35));
+    }
+
+    body::after{
+      opacity:.42;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,228,163,.20), transparent 34%),
+        radial-gradient(circle at 50% 100%, rgba(180,67,52,.28), transparent 38%);
+    }
+
+    .page::before{
+      border-color:rgba(240,216,148,.18);
+    }
+
+    .fine-line{
+      background:linear-gradient(90deg, transparent, rgba(240,216,148,.95), transparent);
+    }
+
+    .brand-cn,
+    .wedding-title .brand-cn{
+      color:#ffe6b8;
+      text-shadow:0 2px 10px rgba(45,8,8,.35);
+    }
+
+    .brand-en,
+    .date-en,
+    .small-kicker,
+    .opening-kicker,
+    .traffic-title,
+    .final-slogan,
+    .final-slogan .with-love,
+    .final-slogan .slogan-line,
+    .mini-date{
+      color:#e6c579;
+    }
+
+    .cover-signature .line1{
+      color:#f2d58c;
+      text-shadow:0 8px 28px rgba(0,0,0,.18);
+    }
+
+    .cover-signature .line2{
+      color:#e6c579;
+    }
+
+    .caption,
+    .name-copy,
+    .invite-text,
+    .story-intro,
+    .ending,
+    .traffic-text,
+    .traffic-note,
+    .open-tip,
+    .countdown-label,
+    .event-date,
+    .event-venue,
+    .event-time span,
+    .final-see-you{
+      color:#f4dfc3;
+    }
+
+    .countdown-unit,
+    #countdownDay,
+    .event-time strong,
+    .event-venue-en,
+    .avatar-heart,
+    .tiny-heart{
+      color:#e9c66f;
+    }
+
+    .hero-photo,
+    .wide-photo{
+      background:#572126;
+      border:8px solid rgba(255,238,196,.70);
+      box-shadow:
+        0 22px 52px rgba(25,5,5,.32),
+        0 0 0 1px rgba(240,216,148,.18),
+        0 2px 0 rgba(255,255,255,.18) inset;
+    }
+
+    .hero-photo::after,
+    .wide-photo::after{
+      background:linear-gradient(rgba(80,20,20,.10), rgba(80,20,20,.10));
+    }
+
+    .ghost-button{
+      color:#ffe5b7;
+    }
+
+    .ghost-button::before,
+    .ghost-button::after{
+      background:linear-gradient(90deg, transparent, rgba(240,216,148,.92), transparent);
+    }
+
+    .ghost-button:hover{
+      color:#fff2d4;
+    }
+
+    .ghost-button:hover::before,
+    .ghost-button:hover::after{
+      background:linear-gradient(90deg, transparent, #c99a3e, #f0d894, #c99a3e, transparent);
+    }
+
+    .name-input{
+      color:#fff2d4;
+      border-bottom-color:rgba(240,216,148,.78);
+    }
+
+    .name-input::placeholder{
+      color:rgba(255,232,190,.58);
+    }
+
+    .name-error{
+      color:#ffd6c2;
+    }
+
+    .greeting-card,
+    .invite-paper,
+    .traffic-row{
+      background:rgba(83,25,29,.64);
+      border:1px solid rgba(240,216,148,.22);
+      box-shadow:0 26px 80px rgba(20,5,5,.30);
+      backdrop-filter:blur(8px);
+    }
+
+    .greeting-card::before,
+    .invite-paper::before{
+      border-color:rgba(240,216,148,.22);
+    }
+
+    .dear{
+      color:#ffe6b8;
+    }
+
+    .avatar-name,
+    .traffic-name{
+      color:#ffe6b8;
+    }
+
+    .avatar-card::after{
+      background:rgba(240,216,148,.18);
+    }
+
+    .avatar-card img{
+      filter:
+        drop-shadow(0 0 2px rgba(255,244,225,.95))
+        drop-shadow(0 0 6px rgba(255,244,225,.72))
+        drop-shadow(0 14px 24px rgba(20,5,5,.25));
+    }
+
+    .time-divider{
+      background:rgba(240,216,148,.32);
+    }
+
+    .map-preview{
+      background:#4b181b;
+      border-color:rgba(240,216,148,.22);
+      box-shadow:0 12px 32px rgba(20,5,5,.25);
+    }
+
+    .traffic-link{
+      color:#f0d894;
+    }
+
+    .traffic-link:hover{
+      color:#fff2d4;
+    }
+
+    .traffic-highlight{
+      color:#ffd6b0;
+    }
+
+    .traffic-row:hover{
+      background:rgba(113,38,43,.74);
+      box-shadow:0 22px 50px rgba(20,5,5,.34);
+    }
+
+    .ending::before{
+      background:rgba(240,216,148,.72);
+    }
+
+    .seal{
+      color:#f0d894;
+      border-color:rgba(240,216,148,.70);
+      background:rgba(105,35,40,.20);
+      box-shadow:0 8px 24px rgba(20,5,5,.20);
+    }
+
+    /* Loading 也改為同一套中式紅 */
+    #loadingScreen{
+      background:
+        radial-gradient(circle at 20% 16%, rgba(255,226,168,.16), transparent 34%),
+        radial-gradient(circle at 82% 88%, rgba(175,67,53,.30), transparent 36%),
+        linear-gradient(135deg,#3f1417 0%, #6d252a 52%, #461619 100%);
+    }
+
+    #loadingScreen::before{
+      content:"";
+      position:absolute;
+      inset:18px;
+      border:1px solid rgba(240,216,148,.22);
+      border-radius:34px;
+      pointer-events:none;
+    }
+
+    #loadingScreen::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.16;
+      background-image:
+        linear-gradient(90deg, rgba(240,216,148,.20) 1px, transparent 1px),
+        linear-gradient(rgba(240,216,148,.15) 1px, transparent 1px);
+      background-size:34px 34px;
+    }
+
+    .loading-content{
+      position:relative;
+      z-index:1;
+    }
+
+    .loading-heart,
+    .loading-title{
+      color:#f2d58c;
+      text-shadow:0 8px 28px rgba(0,0,0,.22);
+    }
+
+    .loading-subtitle,
+    .loading-date{
+      color:#f4dfc3;
+    }
+
+    .loading-line{
+      background:rgba(255,244,225,.14);
+      box-shadow:inset 0 1px 2px rgba(0,0,0,.22);
+    }
+
+    .loading-line span{
+      background:linear-gradient(90deg,#c99a3e 0%, #f0d894 48%, #c99a3e 100%);
+    }
+
+    @media (max-width:480px){
+      .hero-photo,
+      .wide-photo{
+        border-width:7px;
+      }
+    }
+
+
+
+    /* ========= 專屬邀請卡 / 幸福籤 ========= */
+    .fortune-wrap{
+      width:min(92vw, 520px);
+      margin:auto;
+      padding:34px 0;
+    }
+
+    .draw-kicker{
+      font-family:"Cinzel", serif;
+      font-size:12px;
+      letter-spacing:.34em;
+      color:#f0d894;
+      text-transform:uppercase;
+      margin-bottom:18px;
+      opacity:.92;
+    }
+
+    .fortune-card{
+      position:relative;
+      width:min(86vw, 410px);
+      margin:0 auto;
+      padding:34px 26px 30px;
+      border-radius:32px;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(255,235,190,.16), transparent 36%),
+        linear-gradient(145deg, rgba(123,42,48,.86), rgba(74,20,24,.94));
+      border:1px solid rgba(240,216,148,.38);
+      box-shadow:
+        0 26px 70px rgba(20,5,5,.36),
+        inset 0 1px 0 rgba(255,255,255,.10);
+      overflow:hidden;
+      animation:cardDraw .9s ease both;
+    }
+
+    .fortune-card::before{
+      content:"";
+      position:absolute;
+      inset:14px;
+      border-radius:24px;
+      border:1px solid rgba(240,216,148,.18);
+      pointer-events:none;
+    }
+
+    .fortune-card::after{
+      content:"囍";
+      position:absolute;
+      right:18px;
+      bottom:12px;
+      font-family:"Iansui", serif;
+      font-size:64px;
+      line-height:1;
+      color:rgba(240,216,148,.075);
+      pointer-events:none;
+    }
+
+    .card-topline{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:22px;
+      font-family:"Cinzel", serif;
+      font-size:11px;
+      letter-spacing:.18em;
+      color:#f4dfc3;
+      text-transform:uppercase;
+      opacity:.92;
+    }
+
+    .card-heart{
+      margin:0 auto 12px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:30px;
+      color:#f0d894;
+    }
+
+    .card-title{
+      font-family:"Cinzel", serif;
+      font-size:16px;
+      letter-spacing:.24em;
+      color:#f0d894;
+      text-transform:uppercase;
+      line-height:1.55;
+    }
+
+    .card-name{
+      margin-top:18px;
+      font-family:"Great Vibes", cursive;
+      font-size:clamp(48px, 13vw, 72px);
+      line-height:1;
+      color:#fff1d7;
+      text-shadow:0 10px 30px rgba(0,0,0,.20);
+    }
+
+    .card-meta{
+      margin:22px auto 0;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .meta-box{
+      padding:13px 10px;
+      border-radius:18px;
+      background:rgba(255,244,225,.08);
+      border:1px solid rgba(240,216,148,.18);
+    }
+
+    .meta-label{
+      display:block;
+      margin-bottom:6px;
+      font-family:"Cinzel", serif;
+      font-size:10px;
+      letter-spacing:.20em;
+      color:#d9b86d;
+      text-transform:uppercase;
+    }
+
+    .meta-value{
+      display:block;
+      font-size:15px;
+      letter-spacing:.08em;
+      color:#fff3df;
+    }
+
+    .fortune-divider{
+      width:min(220px, 72%);
+      height:1px;
+      margin:28px auto 22px;
+      background:linear-gradient(90deg, transparent, rgba(240,216,148,.82), transparent);
+    }
+
+    .blessing-label{
+      font-family:"LXGW WenKai TC", "Noto Serif TC", serif;
+      color:#f0d894;
+      letter-spacing:.18em;
+      font-size:15px;
+      margin-bottom:14px;
+    }
+
+    .blessing-title{
+      font-family:"Iansui", serif;
+      font-size:clamp(24px,6vw,32px);
+      color:#fff1d7;
+      letter-spacing:.10em;
+      margin-bottom:12px;
+    }
+
+    .blessing-text{
+      margin:0 auto;
+      color:#f7e7cf;
+      font-size:15.5px;
+      line-height:1.9;
+      letter-spacing:.08em;
+    }
+
+    .fortune-grid{
+      margin:22px auto 0;
+      display:grid;
+      gap:9px;
+      width:min(280px, 100%);
+    }
+
+    .fortune-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,244,225,.07);
+      color:#f8e9d1;
+      font-size:13px;
+      letter-spacing:.08em;
+    }
+
+    .fortune-stars{
+      color:#f0d894;
+      letter-spacing:.04em;
+      white-space:nowrap;
+    }
+
+    .fortune-actions{
+      margin-top:24px;
+    }
+
+    .keepsake-signature{
+    margin:30px auto 4px;
+    text-align:center;
+}
+
+.keepsake-name{
+    font-family:"Cinzel", serif;
+    font-size:18px;
+    letter-spacing:.18em;
+    color:#d8b56b;
+}
+
+.keepsake-line{
+    margin-top:6px;
+    font-family:"Cinzel", serif;
+    font-size:12px;
+    letter-spacing:.28em;
+    color:#c9ab75;
+    text-transform:uppercase;
+}
+
+    @keyframes cardDraw{
+      from{ opacity:0; transform:translateY(20px) rotateY(-10deg) scale(.96); }
+      to{ opacity:1; transform:translateY(0) rotateY(0) scale(1); }
+    }
+
+    @media (max-width:480px){
+      .fortune-card{
+        padding:30px 22px 28px;
+        border-radius:28px;
+      }
+      .card-meta{
+        gap:10px;
+      }
+      .meta-box{
+        padding:12px 8px;
+      }
+      .fortune-row{
+        font-size:12.5px;
+      }
+    }
+
   </style>
 </head>
 
@@ -1248,7 +1845,81 @@
   </section>
 
 
-  <!-- ③ 專屬邀請 -->
+
+
+  <!-- ③ 專屬邀請卡 / 幸福籤 -->
+  <section class="page" id="fortunePage">
+    <main class="fortune-wrap">
+      <div class="draw-kicker fade-up d1">Wedding Keepsake</div>
+
+      <div class="fortune-card fade-up d2">
+        <div class="card-topline">
+          <span>Wedding Invitation</span>
+          <span id="guestCardNo">No.---</span>
+        </div>
+
+        <div class="card-heart">♡</div>
+        <div class="card-title">Special Guest</div>
+        <div class="card-name" id="cardGuestName">Guest</div>
+
+        <div class="card-meta">
+          <div class="meta-box">
+            <span class="meta-label">Status</span>
+            <span class="meta-value">Invited</span>
+          </div>
+          <div class="meta-box">
+            <span class="meta-label">Date</span>
+            <span class="meta-value">2026.12.19</span>
+          </div>
+        </div>
+
+        <div class="fortune-divider"></div>
+
+        <div class="blessing-label">幸福籤</div>
+        <div class="blessing-title" id="blessingTitle">今日祝福</div>
+        <p class="blessing-text" id="blessingText">
+          願今天的你，<br>
+          帶著笑容赴約，<br>
+          帶著幸福回家。
+        </p>
+
+        <div class="fortune-grid">
+          <div class="fortune-row">
+            <span>幸福值</span>
+            <span class="fortune-stars" id="fortuneHappiness">★★★★★</span>
+          </div>
+          <div class="fortune-row">
+            <span>甜點運</span>
+            <span class="fortune-stars" id="fortuneDessert">★★★★☆</span>
+          </div>
+          <div class="fortune-row">
+            <span>拍照運</span>
+            <span class="fortune-stars" id="fortunePhoto">★★★★★</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="keepsake-signature fade-up d3">
+        <div class="tiny-heart">♡</div>
+        <div class="keepsake-name">Tim &amp; Aries</div>
+        <div class="keepsake-line">Together &amp; Always</div>
+      </div>
+
+      <div class="fortune-actions fade-up d4">
+        <button class="ghost-button" onclick="drawRandomWeddingCard()">
+          <span>再抽一張幸福籤 →</span>
+        </button>
+        <button class="ghost-button" onclick="showPage('invitePage')">
+          <span>回到邀請函 ↑</span>
+        </button>
+      </div>
+    </main>
+  </section>
+
+
+
+  
+  <!-- ④ 專屬邀請 -->
   <section class="page" id="greetingPage">
     <main class="shell greeting-wrap">
       <div class="greeting-card">
@@ -1272,7 +1943,7 @@
     </main>
   </section>
 
-  <!-- ④ 婚禮資訊 -->
+  <!-- ⑤ 婚禮資訊 -->
   <section class="page" id="invitePage">
     <main class="invite-scroll">
       <article class="invite-paper">
@@ -1389,15 +2060,13 @@
             都還能想起今天的笑容。
           </p>
 
-          <div class="final-slogan fade-up d4">
-            <div class="with-love">With Love</div>
-            <div class="slogan-name">Tim &amp; Aries</div>
-            <div class="slogan-line">Together &amp; Always</div>
-          </div>
-
-          <div class="final-see-you fade-up d4">
-            期待與您相見<br>
-            2026.12.19
+          <div class="keepsake-entry fade-up d4">
+            <div class="keepsake-heart">♡</div>
+            <div class="keepsake-title">給看到這裡的您</div>
+            <p>我們準備了一張專屬婚禮紀念卡，<br>和一支隨機幸福籤。</p>
+            <button class="ghost-button" onclick="openFortuneFromInvite()">
+              <span>領取專屬紀念卡 →</span>
+            </button>
           </div>
 
           <div class="seal fade-up d4">囍</div>
@@ -1467,6 +2136,65 @@
       }, 350);
     }
 
+
+
+    const weddingBlessings = [
+      { title:"第 1 籤｜滿心歡喜", text:"願今天的你，<br>帶著笑容赴約，<br>帶著滿滿回憶回家。" },
+      { title:"第 2 籤｜冬日相聚", text:"願這一天的燈光，<br>照亮每一張熟悉的臉，<br>也溫暖你來時的路。" },
+      { title:"第 3 籤｜甜點加成", text:"今日宜吃甜點、<br>宜拍合照，<br>宜把幸福帶回家。" },
+      { title:"第 4 籤｜笑容收藏", text:"願今天的每一個笑容，<br>都成為以後想起時，<br>最柔軟的風景。" },
+      { title:"第 5 籤｜好友重逢", text:"今天適合與老朋友相聚，<br>也適合把想說的祝福，<br>好好說出口。" },
+      { title:"第 6 籤｜微醺幸福", text:"願你今晚微醺剛好，<br>笑聲剛好，<br>幸福也剛好。" },
+      { title:"第 7 籤｜拍照滿分", text:"今天的你很適合入鏡，<br>請多拍幾張照片，<br>替我們留下這一天。" },
+      { title:"第 8 籤｜真心抵達", text:"有些祝福不用很大聲，<br>只要您出現，<br>這一天就已經更加完整。" },
+      { title:"第 9 籤｜緣分長長", text:"願所有剛好的相遇，<br>都在今天被好好記得，<br>也在未來繼續發光。" },
+      { title:"第 10 籤｜幸福滿席", text:"今日宜盡情吃喝，<br>宜用力鼓掌，<br>宜相信幸福真的會傳染。" },
+      { title:"第 11 籤｜好事將近", text:"願你今天遇見的好心情，<br>一路延續到明天，<br>再延續到很久以後。" },
+      { title:"第 12 籤｜溫柔赴約", text:"謝謝你把這一天留給我們，<br>也願這份喜悅，<br>悄悄留在你心裡。" }
+    ];
+
+    function nameHash(name) {
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) {
+        hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+      }
+      return hash;
+    }
+
+    function stars(score) {
+      return "★".repeat(score) + "☆".repeat(5 - score);
+    }
+
+    let currentGuestName = "Guest";
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function setupWeddingCard(name) {
+      const blessing = weddingBlessings[randomInt(0, weddingBlessings.length - 1)];
+      const guestNo = String(randomInt(1, 99)).padStart(3, "0");
+
+      document.getElementById("cardGuestName").textContent = name || "Guest";
+      document.getElementById("guestCardNo").textContent = `No.${guestNo}`;
+      document.getElementById("blessingTitle").textContent = blessing.title;
+      document.getElementById("blessingText").innerHTML = blessing.text;
+
+      document.getElementById("fortuneHappiness").textContent = stars(randomInt(4, 5));
+      document.getElementById("fortuneDessert").textContent = stars(randomInt(3, 5));
+      document.getElementById("fortunePhoto").textContent = stars(randomInt(4, 5));
+    }
+
+    function openFortuneFromInvite() {
+      setupWeddingCard(currentGuestName);
+      showPage("fortunePage");
+    }
+
+    function drawRandomWeddingCard() {
+      setupWeddingCard(currentGuestName);
+      showPage("fortunePage");
+    }
+
     function showInvite() {
       const input = document.getElementById("guestName");
       const error = document.getElementById("nameError");
@@ -1486,6 +2214,7 @@
       document.getElementById("endingText").innerHTML =
         `好久不見，${name}。<br>期待在婚禮那天與您相見。`;
 
+      currentGuestName = name;
       showPage("greetingPage");
     }
 
