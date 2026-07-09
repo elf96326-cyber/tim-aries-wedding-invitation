@@ -2346,6 +2346,178 @@
       }
     }
 
+
+    /* ========= SSR 隱藏籤動畫 ========= */
+    .fortune-card.ssr-card{
+      border-color:rgba(255,230,150,.86) !important;
+      box-shadow:
+        0 0 0 1px rgba(255,244,190,.28),
+        0 0 34px rgba(240,216,148,.42),
+        0 22px 64px rgba(20,5,5,.36),
+        inset 0 1px 0 rgba(255,255,255,.16) !important;
+      animation:ssrCardGlow 1.35s ease-in-out infinite alternate;
+    }
+
+    .fortune-card.ssr-card .blessing-title,
+    .fortune-card.ssr-card .card-title,
+    .fortune-card.ssr-card .card-heart{
+      color:#ffe9a8 !important;
+      text-shadow:0 0 18px rgba(240,216,148,.50);
+    }
+
+    .ssr-overlay{
+      position:fixed;
+      inset:0;
+      z-index:999999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+      background:
+        radial-gradient(circle at 50% 34%, rgba(255,230,150,.30), transparent 28%),
+        radial-gradient(circle at 50% 50%, rgba(120,25,30,.66), rgba(28,5,7,.88) 68%);
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transition:opacity .45s ease, visibility .45s ease;
+      overflow:hidden;
+    }
+
+    .ssr-overlay.show{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+    }
+
+    .ssr-burst{
+      position:absolute;
+      width:min(92vw,520px);
+      aspect-ratio:1;
+      border-radius:50%;
+      background:
+        repeating-conic-gradient(
+          from 0deg,
+          rgba(255,232,150,.38) 0deg,
+          rgba(255,232,150,.03) 5deg,
+          transparent 10deg
+        );
+      filter:blur(.2px);
+      animation:ssrBurst 1.1s ease both;
+      opacity:.9;
+    }
+
+    .ssr-panel{
+      width:min(88vw,380px);
+      position:relative;
+      z-index:3;
+      border-radius:32px;
+      padding:34px 24px 28px;
+      text-align:center;
+      border:1px solid rgba(255,232,150,.68);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,235,176,.26), transparent 38%),
+        linear-gradient(145deg, rgba(126,35,42,.96), rgba(60,12,16,.98));
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.10) inset,
+        0 0 38px rgba(240,216,148,.45),
+        0 28px 80px rgba(0,0,0,.42);
+      transform:scale(.72) translateY(18px);
+      opacity:0;
+    }
+
+    .ssr-overlay.show .ssr-panel{
+      animation:ssrPop .78s cubic-bezier(.2,1.2,.25,1) .18s both;
+    }
+
+    .ssr-badge{
+      display:inline-block;
+      margin-bottom:14px;
+      padding:7px 18px 8px;
+      border-radius:999px;
+      color:#6d252a;
+      background:linear-gradient(135deg,#fff1b8,#d9b86f,#fff1b8);
+      font-family:"Cinzel",serif;
+      font-size:13px;
+      letter-spacing:.22em;
+      box-shadow:0 8px 22px rgba(0,0,0,.22);
+    }
+
+    .ssr-title{
+      font-family:"Iansui","LXGW WenKai TC",serif;
+      font-size:clamp(34px,9vw,48px);
+      letter-spacing:.12em;
+      color:#fff2c8;
+      line-height:1.35;
+      text-shadow:0 0 24px rgba(240,216,148,.45);
+    }
+
+    .ssr-subtitle{
+      margin:18px auto 0;
+      color:#f8dfb7;
+      font-size:15px;
+      line-height:1.85;
+      letter-spacing:.08em;
+    }
+
+    .ssr-close{
+      margin-top:22px;
+      min-width:150px;
+      border:0;
+      border-radius:999px;
+      padding:12px 18px 13px;
+      font-family:"LXGW WenKai TC","Noto Serif TC",serif;
+      letter-spacing:.12em;
+      color:#6d252a;
+      background:linear-gradient(135deg,#fff0b7,#d8b56b,#fff0b7);
+      box-shadow:0 12px 28px rgba(0,0,0,.24);
+      cursor:pointer;
+      touch-action:manipulation;
+    }
+
+    .ssr-confetti{
+      position:absolute;
+      top:-14px;
+      width:7px;
+      height:14px;
+      border-radius:2px;
+      background:#f0d894;
+      opacity:.95;
+      animation:ssrConfettiFall 2.9s linear forwards;
+    }
+
+    @keyframes ssrCardGlow{
+      from{ filter:brightness(1); }
+      to{ filter:brightness(1.12); }
+    }
+
+    @keyframes ssrBurst{
+      from{ transform:scale(.25) rotate(0deg); opacity:0; }
+      to{ transform:scale(1.18) rotate(28deg); opacity:.9; }
+    }
+
+    @keyframes ssrPop{
+      0%{ transform:scale(.72) translateY(18px); opacity:0; }
+      70%{ transform:scale(1.04) translateY(0); opacity:1; }
+      100%{ transform:scale(1) translateY(0); opacity:1; }
+    }
+
+    @keyframes ssrConfettiFall{
+      0%{ transform:translateY(-20px) rotate(0deg); opacity:1; }
+      100%{ transform:translateY(110vh) rotate(720deg); opacity:0; }
+    }
+
+    @media (max-width:480px){
+      .ssr-panel{
+        width:min(90vw,350px);
+        padding:30px 22px 26px;
+        border-radius:28px;
+      }
+
+      .ssr-subtitle{
+        font-size:14px;
+      }
+    }
+
 </style>
 </head>
 
@@ -2668,6 +2840,23 @@
     </main>
   </section>
 
+
+  <!-- SSR 隱藏籤動畫 -->
+  <div id="ssrOverlay" class="ssr-overlay" aria-hidden="true">
+    <div class="ssr-burst"></div>
+    <div class="ssr-panel">
+      <div class="ssr-badge">SSR HIDDEN FORTUNE</div>
+      <div class="ssr-title">天選嘉賓</div>
+      <div class="ssr-subtitle">
+        ✨ 恭喜抽到隱藏喜籤 ✨<br>
+        婚禮的幸運星，<br>
+        記得截圖留存畫面喔。
+      </div>
+      <button type="button" class="ssr-close" onclick="closeSSRAnimation()">收下好運</button>
+    </div>
+  </div>
+
+
   <script>
     window.history.scrollRestoration = "manual";
 
@@ -2732,19 +2921,108 @@
 
 
     const weddingBlessings = [
-      { title:"第 1 籤｜滿心歡喜", text:"願今天的你，<br>帶著笑容赴約，<br>帶著滿滿回憶回家。" },
-      { title:"第 2 籤｜冬日相聚", text:"願這一天的燈光，<br>照亮每一張熟悉的臉，<br>也溫暖你來時的路。" },
-      { title:"第 3 籤｜甜點加成", text:"今日宜吃甜點、<br>宜拍合照，<br>宜把幸福帶回家。" },
-      { title:"第 4 籤｜笑容收藏", text:"願今天的每一個笑容，<br>都成為以後想起時，<br>最柔軟的風景。" },
-      { title:"第 5 籤｜好友重逢", text:"今天適合與老朋友相聚，<br>也適合把想說的祝福，<br>好好說出口。" },
-      { title:"第 6 籤｜微醺幸福", text:"願你今晚微醺剛好，<br>笑聲剛好，<br>幸福也剛好。" },
-      { title:"第 7 籤｜拍照滿分", text:"今天的你很適合入鏡，<br>請多拍幾張照片，<br>替我們留下這一天。" },
-      { title:"第 8 籤｜真心抵達", text:"有些祝福不用很大聲，<br>只要您出現，<br>這一天就已經更加完整。" },
-      { title:"第 9 籤｜緣分長長", text:"願所有剛好的相遇，<br>都在今天被好好記得，<br>也在未來繼續發光。" },
-      { title:"第 10 籤｜幸福滿席", text:"今日宜盡情吃喝，<br>宜用力鼓掌，<br>宜相信幸福真的會傳染。" },
-      { title:"第 11 籤｜好事將近", text:"願你今天遇見的好心情，<br>一路延續到明天，<br>再延續到很久以後。" },
-      { title:"第 12 籤｜溫柔赴約", text:"謝謝你把這一天留給我們，<br>也願這份喜悅，<br>悄悄留在你心裡。" }
+      { title:"第 1 籤｜相知相惜", text:"願你遇見的人，<br>都願意好好珍惜你的真心，<br>把日子過成溫柔的模樣。" },
+      { title:"第 2 籤｜雙向奔赴", text:"最好的感情，<br>是兩個人一起走向彼此，<br>也一起走向更好的未來。" },
+      { title:"第 3 籤｜心有所屬", text:"願所有等待，<br>最後都能有一個溫暖的答案，<br>也有一個安心的歸處。" },
+      { title:"第 4 籤｜幸福同行", text:"今天你見證我們，<br>明天也願幸福陪著你，<br>慢慢走過每個日常。" },
+      { title:"第 5 籤｜一生有伴", text:"願往後每個重要時刻，<br>都有值得信任的人，<br>陪你一起分享。" },
+      { title:"第 6 籤｜緣分未完", text:"所有美好的相遇，<br>都不是偶然，<br>而是故事悄悄開始。" },
+      { title:"第 7 籤｜幸運降臨", text:"今天的好運，<br>已經悄悄站在你身邊，<br>等著和你一起入席。" },
+      { title:"第 8 籤｜真心抵達", text:"有些祝福不用很大聲，<br>只要你出現，<br>這一天就已經更加完整。" },
+      { title:"第 9 籤｜緣分長長", text:"願今天留下的笑容，<br>成為未來想起時，<br>依然會發光的回憶。" },
+      { title:"第 10 籤｜幸福滿席", text:"今日宜開心，<br>宜拍照，<br>宜相信幸福真的會傳染。" },
+      { title:"第 11 籤｜好事將近", text:"願今天開始，<br>好事一件接著一件，<br>慢慢走進你的生活。" },
+      { title:"第 12 籤｜溫柔赴約", text:"謝謝你把這一天留給我們，<br>也願這份喜悅，<br>悄悄留在你心裡。" },
+      { title:"第 13 籤｜最佳賓客", text:"恭喜解鎖婚禮限定成就：<br>最重要的人，<br>今天請安心收下這份喜悅。" },
+      { title:"第 14 籤｜歡笑加倍", text:"今天請盡情笑，<br>因為幸福最喜歡笑容，<br>也最喜歡你來到現場。" },
+      { title:"第 15 籤｜相聚時刻", text:"有些人就算很久不見，<br>一見面還是熟悉，<br>今天就是這樣的好日子。" },
+      { title:"第 16 籤｜幸福見證人", text:"從今天開始，<br>你也是我們故事的一部分，<br>謝謝你來見證。" },
+      { title:"第 17 籤｜快門時光", text:"記得多拍幾張照片，<br>今天值得被保存，<br>也值得以後慢慢回味。" },
+      { title:"第 18 籤｜限定回憶", text:"今天收藏的不只是照片，<br>還有笑聲、祝福，<br>和一段剛剛好的幸福。" },
+      { title:"第 19 籤｜笑口常開", text:"願你的生活，<br>每天都有值得開心的小事，<br>也有人懂你的可愛。" },
+      { title:"第 20 籤｜心想事成", text:"今天許下的小願望，<br>正在慢慢靠近，<br>請記得溫柔期待。" },
+      { title:"第 21 籤｜一路順風", text:"願你未來的每一步，<br>都走得安心又踏實，<br>也走向喜歡的地方。" },
+      { title:"第 22 籤｜平安喜樂", text:"願歲月溫柔，<br>日子安穩，<br>心裡一直有光。" },
+      { title:"第 23 籤｜萬事如意", text:"願所有努力，<br>都得到最好的回應，<br>所有期待都不被辜負。" },
+      { title:"第 24 籤｜日日有光", text:"希望你每天醒來，<br>都能期待今天，<br>也能喜歡現在的自己。" },
+      { title:"第 25 籤｜甜點加倍", text:"今日甜點熱量歸零，<br>幸福濃度加倍，<br>請放心收下這份甜。" },
+      { title:"第 26 籤｜拍照之神", text:"今天任何角度都很好看，<br>任何笑容都剛剛好，<br>請多留幾張美照。" },
+      { title:"第 27 籤｜抽獎 Buff", text:"今天的中獎運，<br>比昨天高一點，<br>比平常更值得期待。" },
+      { title:"第 28 籤｜乾杯時刻", text:"今晚請放心舉杯，<br>因為幸福值得慶祝，<br>相聚也值得乾杯。" },
+      { title:"第 29 籤｜喜餅加一", text:"今日宜再拿一塊喜餅，<br>把甜甜的祝福，<br>一起帶回家。" },
+      { title:"第 30 籤｜捧花幸運", text:"今日與幸福的距離：<br>非常接近，<br>請準備好接住好運。" },
+      { title:"第 31 籤｜幸福傳遞", text:"下一個收到幸福消息的人，<br>可能就是你，<br>請先把好運收好。" },
+      { title:"第 32 籤｜圓滿如願", text:"願所有期待，<br>都能被溫柔實現，<br>也都剛好抵達。" },
+      { title:"第 33 籤｜歲歲平安", text:"願未來每一年，<br>都比今年更幸福，<br>也比想像更順心。" },
+      { title:"第 34 籤｜一路繁花", text:"願你走過的地方，<br>都開滿笑容，<br>也遇見值得珍惜的人。" },
+      { title:"第 35 籤｜星光相伴", text:"願每一個夜晚，<br>都有人替你留一盞燈，<br>也有人把你放在心上。" },
+      { title:"第 36 籤｜幸福滿分", text:"今天抽到這支籤，<br>表示幸福已經偷偷找到你，<br>接下來請好好收下。" }
     ];
+
+    const hiddenBlessings = [
+      { title:"隱藏籤｜天選嘉賓 SSR", text:"✨ 恭喜抽到隱藏喜籤 ✨<br>今天的你，是婚禮的幸運星，<br>願未來一年好運都悄悄跟著你。" }
+    ];
+
+    const SSR_STORAGE_KEY = "timAriesSsrCounter";
+    let ssrCounter = Number(localStorage.getItem(SSR_STORAGE_KEY) || 0);
+
+    function saveSsrCounter() {
+      localStorage.setItem(SSR_STORAGE_KEY, String(ssrCounter));
+    }
+
+    function drawBlessing() {
+      const shouldUseGuarantee = ssrCounter >= 19;
+      const shouldHitSSR = shouldUseGuarantee || Math.random() < 0.03;
+
+      if (shouldHitSSR) {
+        ssrCounter = 0;
+        saveSsrCounter();
+        return {
+          blessing: hiddenBlessings[randomInt(0, hiddenBlessings.length - 1)],
+          isHidden: true
+        };
+      }
+
+      ssrCounter++;
+      saveSsrCounter();
+
+      return {
+        blessing: weddingBlessings[randomInt(0, weddingBlessings.length - 1)],
+        isHidden: false
+      };
+    }
+
+    function showSSRAnimation() {
+      const overlay = document.getElementById("ssrOverlay");
+      if (!overlay) return;
+
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+
+      overlay.querySelectorAll(".ssr-confetti").forEach(el => el.remove());
+
+      for (let i = 0; i < 42; i++) {
+        const piece = document.createElement("span");
+        piece.className = "ssr-confetti";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.animationDelay = (Math.random() * 0.9) + "s";
+        piece.style.animationDuration = (2.2 + Math.random() * 1.4) + "s";
+        piece.style.transform = `rotate(${Math.random() * 180}deg)`;
+        piece.style.background = Math.random() > 0.45 ? "#f0d894" : "#fff2c8";
+        overlay.appendChild(piece);
+      }
+
+      setTimeout(() => {
+        overlay.querySelectorAll(".ssr-confetti").forEach(el => el.remove());
+      }, 4200);
+    }
+
+    function closeSSRAnimation() {
+      const overlay = document.getElementById("ssrOverlay");
+      if (!overlay) return;
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+    }
 
     function nameHash(name) {
       let hash = 0;
@@ -2765,27 +3043,40 @@
     }
 
     function setupWeddingCard(name) {
-      const blessing = weddingBlessings[randomInt(0, weddingBlessings.length - 1)];
-      const guestNo = String(randomInt(1, 99)).padStart(3, "0");
+      const result = drawBlessing();
+      const blessing = result.blessing;
+      const isHiddenBlessing = result.isHidden;
+      const guestNo = isHiddenBlessing
+        ? "SSR"
+        : String(randomInt(1, 99)).padStart(3, "0");
+
+      const fortuneCard = document.querySelector(".fortune-card");
+      if (fortuneCard) {
+        fortuneCard.classList.toggle("ssr-card", isHiddenBlessing);
+      }
 
       document.getElementById("cardGuestName").textContent = name || "Guest";
       document.getElementById("guestCardNo").textContent = `No.${guestNo}`;
       document.getElementById("blessingTitle").textContent = blessing.title;
       document.getElementById("blessingText").innerHTML = blessing.text;
 
-      document.getElementById("fortuneHappiness").textContent = stars(randomInt(4, 5));
-      document.getElementById("fortuneDessert").textContent = stars(randomInt(3, 5));
-      document.getElementById("fortunePhoto").textContent = stars(randomInt(4, 5));
+      document.getElementById("fortuneHappiness").textContent = stars(isHiddenBlessing ? 5 : randomInt(4, 5));
+      document.getElementById("fortuneDessert").textContent = stars(isHiddenBlessing ? 5 : randomInt(3, 5));
+      document.getElementById("fortunePhoto").textContent = stars(isHiddenBlessing ? 5 : randomInt(4, 5));
+
+      return isHiddenBlessing;
     }
 
     function openFortuneFromInvite() {
-      setupWeddingCard(currentGuestName);
+      const isHidden = setupWeddingCard(currentGuestName);
       showPage("fortunePage");
+      if (isHidden) setTimeout(showSSRAnimation, 220);
     }
 
     function drawRandomWeddingCard() {
-      setupWeddingCard(currentGuestName);
+      const isHidden = setupWeddingCard(currentGuestName);
       showPage("fortunePage");
+      if (isHidden) setTimeout(showSSRAnimation, 220);
     }
 
     function showInvite() {
