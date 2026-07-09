@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>莊滿禛心｜電子喜帖</title>
+  <title>T&A｜莊滿禛心｜電子喜帖</title>
 
   <!-- 字體：上線後會自動載入；若離線預覽，會使用系統襯線字 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3723,7 +3723,7 @@
         title:"隱藏籤｜美好如期 SSR",
         overlayTitle:"美好如期",
         text:"🌻 願所有等待，<br>最後都能如約而至。<br>願幸福，不早也不晚。",
-        verlayText:"✨ 恭喜抽到隱藏喜籤 ✨<br>願所有期待，<br>都能如期而至。"
+        overlayText:"✨ 恭喜抽到隱藏喜籤 ✨<br>願所有期待，<br>都能如期而至。"
       },
       {
         id:"luckyDouble",
@@ -4026,10 +4026,10 @@
       const title = document.getElementById("ssrTitle");
       const subtitle = document.getElementById("ssrSubtitle");
 
-      if (badge) badge.textContent = `${rarity} HIDDEN FORTUNE`;
-      if (title) title.textContent = hiddenData.overlayTitle || hiddenData.title || "隱藏喜籤";
+      if (badge) badge.textContent = hiddenData.badge || (rarity === "UR" ? "LEGENDARY BLESSING" : "HIDDEN BLESSING");
+      if (title) title.textContent = hiddenData.overlayTitle || hiddenData.title;
       if (subtitle) {
-        subtitle.innerHTML = hiddenData.overlayText || hiddenData.text || "✨ 恭喜抽到隱藏喜籤 ✨<br>記得截圖傳到官方 LINE 給我們喔。";
+        subtitle.innerHTML = hiddenData.overlayText || hiddenData.text;
       }
 
       overlay.classList.toggle("ur-mode", rarity === "UR");
@@ -4085,14 +4085,14 @@
       const blessing = result.blessing;
       const isHiddenBlessing = result.isHidden;
 
+      const hiddenRarity = isHiddenBlessing ? (blessing.rarity || "SSR") : "";
+      latestHiddenBlessing = isHiddenBlessing ? blessing : null;
+
       if (isHiddenBlessing) {
         playSSREffect();
       } else {
         playDrawEffect();
       }
-
-      const hiddenRarity = isHiddenBlessing ? (blessing.rarity || "SSR") : "";
-      latestHiddenBlessing = isHiddenBlessing ? blessing : null;
 
       const collectionJustCompleted = isHiddenBlessing ? updateHiddenCollection(blessing) : false;
       latestCollectionCompleted = collectionJustCompleted;
