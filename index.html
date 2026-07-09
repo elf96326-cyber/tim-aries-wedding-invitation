@@ -2518,10 +2518,84 @@
       }
     }
 
+
+    /* ========= 背景音樂按鈕 ========= */
+    .music-toggle{
+      position:fixed !important;
+      right:18px;
+      bottom:18px;
+      z-index:999998 !important;
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      border:1px solid rgba(240,216,148,.42);
+      background:rgba(83,25,29,.70);
+      color:#f0d894;
+      font-family:"Cinzel",serif;
+      font-size:19px;
+      line-height:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 12px 30px rgba(20,5,5,.28);
+      backdrop-filter:blur(8px);
+      cursor:pointer;
+      opacity:.92;
+      transition:.25s ease;
+    }
+
+    .music-toggle:hover{
+      transform:translateY(-2px);
+      color:#fff2d4;
+      border-color:rgba(240,216,148,.68);
+    }
+
+    .music-toggle.playing{
+      background:linear-gradient(135deg, rgba(123,42,48,.86), rgba(74,20,24,.94));
+      box-shadow:
+        0 0 0 1px rgba(240,216,148,.22),
+        0 0 22px rgba(240,216,148,.22),
+        0 12px 30px rgba(20,5,5,.30);
+    }
+
+    .music-toggle.playing::after{
+      content:"";
+      position:absolute;
+      inset:-5px;
+      border-radius:50%;
+      border:1px solid rgba(240,216,148,.28);
+      animation:musicPulse 1.8s ease-in-out infinite;
+      pointer-events:none;
+    }
+
+    @keyframes musicPulse{
+      0%{ transform:scale(.86); opacity:.65; }
+      100%{ transform:scale(1.26); opacity:0; }
+    }
+
+    @media (max-width:480px){
+      .music-toggle{
+        right:14px;
+        bottom:14px;
+        width:42px;
+        height:42px;
+        font-size:18px;
+      }
+    }
+
 </style>
 </head>
 
 <body>
+
+  <!-- 音樂與音效：背景音樂請把自己的檔案命名為 wedding-music.mp3，和這個 HTML 放在同一層 -->
+  <audio id="bgMusic" src="wedding-music.mp3" loop preload="auto"></audio>
+
+
+  <button type="button" id="musicToggle" class="music-toggle" onclick="toggleBgMusic()" aria-label="背景音樂開關">
+    ♪
+  </button>
+
 
   <div id="loadingScreen">
     <div class="loading-content">
@@ -2858,6 +2932,146 @@
 
 
   <script>
+
+    /* ========= 音樂 / 音效 ========= */
+    let bgMusicStarted = false;
+    let audioContextForEffects = null;
+
+    function getEffectAudioContext(){
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return null;
+      if (!audioContextForEffects) {
+        audioContextForEffects = new AudioContextClass();
+      }
+      if (audioContextForEffects.state === "suspended") {
+        audioContextForEffects.resume().catch(() => {});
+      }
+      return audioContextForEffects;
+    }
+
+    function updateMusicButton(isPlaying){
+      const btn = document.getElementById("musicToggle");
+      if (!btn) return;
+      btn.classList.toggle("playing", !!isPlaying);
+      btn.textContent = isPlaying ? "♫" : "♪";
+      btn.setAttribute("aria-label", isPlaying ? "關閉背景音樂" : "開啟背景音樂");
+    }
+
+    function fadeAudioTo(audio, targetVolume, duration = 1600){
+      if (!audio) return;
+      const startVolume = audio.volume || 0;
+      const startTime = performance.now();
+
+      function step(now){
+        const progress = Math.min(1, (now - startTime) / duration);
+        audio.volume = startVolume + (targetVolume - startVolume) * progress;
+        if (progress < 1) requestAnimationFrame(step);
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    function playBgMusic(){
+      const music = document.getElementById("bgMusic");
+      if (!music) return;
+
+      music.volume = 0;
+      music.play()
+        .then(() => {
+          bgMusicStarted = true;
+          updateMusicButton(true);
+          fadeAudioTo(music, 0.32, 1800);
+        })
+        .catch(() => {
+          updateMusicButton(false);
+        });
+    }
+
+    function toggleBgMusic(){
+      const music = document.getElementById("bgMusic");
+      if (!music) return;
+
+      if (music.paused) {
+        playBgMusic();
+      } else {
+        fadeAudioTo(music, 0, 600);
+        setTimeout(() => {
+          music.pause();
+          updateMusicButton(false);
+        }, 620);
+      }
+    }
+
+    function playDrawEffect(){
+      const ctx = getEffectAudioContext();
+      if (!ctx) return;
+
+      const now = ctx.currentTime;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+      gain.connect(ctx.destination);
+
+      const osc1 = ctx.createOscillator();
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(620, now);
+      osc1.frequency.exponentialRampToValueAtTime(980, now + 0.18);
+      osc1.connect(gain);
+      osc1.start(now);
+      osc1.stop(now + 0.42);
+
+      const osc2 = ctx.createOscillator();
+      osc2.type = "triangle";
+      osc2.frequency.setValueAtTime(1240, now + 0.05);
+      osc2.frequency.exponentialRampToValueAtTime(820, now + 0.30);
+      osc2.connect(gain);
+      osc2.start(now + 0.05);
+      osc2.stop(now + 0.36);
+    }
+
+    function playSSREffect(){
+      const ctx = getEffectAudioContext();
+      if (!ctx) return;
+
+      const now = ctx.currentTime;
+      const master = ctx.createGain();
+      master.gain.setValueAtTime(0.0001, now);
+      master.gain.exponentialRampToValueAtTime(0.22, now + 0.04);
+      master.gain.exponentialRampToValueAtTime(0.0001, now + 1.35);
+      master.connect(ctx.destination);
+
+      [523.25, 659.25, 783.99, 1046.5].forEach((freq, index) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const t = now + index * 0.11;
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, t);
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.exponentialRampToValueAtTime(0.22, t + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+
+        osc.connect(gain);
+        gain.connect(master);
+        osc.start(t);
+        osc.stop(t + 0.62);
+      });
+
+      const sparkle = ctx.createOscillator();
+      const sparkleGain = ctx.createGain();
+      sparkle.type = "triangle";
+      sparkle.frequency.setValueAtTime(1568, now + 0.45);
+      sparkle.frequency.exponentialRampToValueAtTime(2093, now + 1.05);
+      sparkleGain.gain.setValueAtTime(0.0001, now + 0.45);
+      sparkleGain.gain.exponentialRampToValueAtTime(0.15, now + 0.50);
+      sparkleGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.20);
+      sparkle.connect(sparkleGain);
+      sparkleGain.connect(master);
+      sparkle.start(now + 0.45);
+      sparkle.stop(now + 1.25);
+    }
+
     window.history.scrollRestoration = "manual";
 
     function forceTop(targetPage) {
@@ -2910,6 +3124,7 @@
     }
 
     function goToNamePage() {
+      playBgMusic();
       showPage("namePage");
       setTimeout(() => {
         const input = document.getElementById("guestName");
@@ -3046,6 +3261,13 @@
       const result = drawBlessing();
       const blessing = result.blessing;
       const isHiddenBlessing = result.isHidden;
+
+      if (isHiddenBlessing) {
+        playSSREffect();
+      } else {
+        playDrawEffect();
+      }
+
       const guestNo = isHiddenBlessing
         ? "SSR"
         : String(randomInt(1, 99)).padStart(3, "0");
@@ -3080,6 +3302,7 @@
     }
 
     function showInvite() {
+      playBgMusic();
       const input = document.getElementById("guestName");
       const error = document.getElementById("nameError");
       const name = input.value.trim();
