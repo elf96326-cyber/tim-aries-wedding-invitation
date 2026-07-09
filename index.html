@@ -2801,6 +2801,187 @@
       }
     }
 
+
+    /* ========= 幸福收藏冊完成提示 ========= */
+    .collection-complete-overlay{
+      position:fixed;
+      inset:0;
+      z-index:1000002;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+      background:
+        radial-gradient(circle at 50% 32%, rgba(255,230,150,.34), transparent 30%),
+        radial-gradient(circle at 50% 50%, rgba(120,25,30,.72), rgba(28,5,7,.90) 68%);
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transition:opacity .45s ease, visibility .45s ease;
+      overflow:hidden;
+    }
+
+    .collection-complete-overlay.show{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+    }
+
+    .collection-complete-burst{
+      position:absolute;
+      width:min(98vw,560px);
+      aspect-ratio:1;
+      border-radius:50%;
+      background:
+        repeating-conic-gradient(
+          from 0deg,
+          rgba(255,232,150,.42) 0deg,
+          rgba(255,232,150,.04) 6deg,
+          transparent 12deg
+        );
+      opacity:.86;
+      animation:ssrBurst 1.15s ease both;
+    }
+
+    .collection-complete-panel{
+      width:min(88vw,390px);
+      position:relative;
+      z-index:3;
+      border-radius:32px;
+      padding:34px 24px 28px;
+      text-align:center;
+      border:1px solid rgba(255,232,150,.70);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,235,176,.25), transparent 38%),
+        linear-gradient(145deg, rgba(126,35,42,.96), rgba(60,12,16,.98));
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.10) inset,
+        0 0 42px rgba(240,216,148,.48),
+        0 28px 82px rgba(0,0,0,.46);
+      transform:scale(.74) translateY(18px);
+      opacity:0;
+    }
+
+    .collection-complete-overlay.show .collection-complete-panel{
+      animation:ssrPop .78s cubic-bezier(.2,1.2,.25,1) .14s both;
+    }
+
+    .collection-complete-badge{
+      display:inline-block;
+      margin-bottom:13px;
+      padding:7px 18px 8px;
+      border-radius:999px;
+      color:#6d252a;
+      background:linear-gradient(135deg,#fff1b8,#d9b86f,#b885ff,#fff1b8);
+      font-family:"Cinzel",serif;
+      font-size:12px;
+      letter-spacing:.22em;
+      box-shadow:0 8px 22px rgba(0,0,0,.22);
+    }
+
+    .collection-complete-title{
+      font-family:"Iansui","LXGW WenKai TC",serif;
+      font-size:clamp(30px,8vw,44px);
+      letter-spacing:.10em;
+      color:#fff2c8;
+      line-height:1.35;
+      text-shadow:0 0 24px rgba(240,216,148,.45);
+    }
+
+    .collection-complete-slots{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      margin:22px auto 18px;
+    }
+
+    .collection-complete-slot{
+      width:30px;
+      height:30px;
+      border-radius:10px;
+      background:linear-gradient(145deg, rgba(240,216,148,.92), rgba(181,129,58,.96));
+      box-shadow:0 0 18px rgba(240,216,148,.30), inset 0 1px 0 rgba(255,255,255,.28);
+      position:relative;
+      opacity:0;
+      transform:scale(.72) rotate(-8deg);
+      animation:completeSlotIn .42s ease forwards;
+    }
+
+    .collection-complete-slot::before{
+      content:"✦";
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#5b1d21;
+      font-size:14px;
+    }
+
+    .collection-complete-slot:nth-child(1){ animation-delay:.45s; }
+    .collection-complete-slot:nth-child(2){ animation-delay:.62s; }
+    .collection-complete-slot:nth-child(3){ animation-delay:.79s; }
+    .collection-complete-slot:nth-child(4){ animation-delay:.96s; }
+
+    .collection-complete-slot.ur{
+      background:linear-gradient(145deg, #fff0a8, #b885ff 55%, #5a2162);
+      box-shadow:0 0 22px rgba(240,216,148,.38), 0 0 34px rgba(168,92,255,.30), inset 0 1px 0 rgba(255,255,255,.28);
+      animation-delay:1.13s;
+    }
+
+    .collection-complete-slot.ur::before{
+      content:"👑";
+      font-size:13px;
+    }
+
+    .collection-complete-text{
+      margin:0 auto;
+      color:#f8dfb7;
+      font-size:15px;
+      line-height:1.85;
+      letter-spacing:.08em;
+    }
+
+    .collection-complete-actions{
+      margin-top:22px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .collection-complete-close{
+      appearance:none;
+      border:0;
+      border-radius:999px;
+      padding:12px 20px 13px;
+      min-width:140px;
+      background:linear-gradient(135deg,#d8b56b,#b88946,#e0bd72);
+      color:#fff9ef;
+      font-family:"LXGW WenKai TC","Noto Serif TC",serif;
+      font-size:14px;
+      letter-spacing:.10em;
+      cursor:pointer;
+      box-shadow:0 12px 28px rgba(20,5,5,.24);
+    }
+
+    @keyframes completeSlotIn{
+      to{ opacity:1; transform:scale(1) rotate(0); }
+    }
+
+    @media (max-width:480px){
+      .collection-complete-panel{
+        padding:32px 22px 26px;
+        border-radius:30px;
+      }
+      .collection-complete-slot{
+        width:28px;
+        height:28px;
+        border-radius:9px;
+      }
+    }
+
+
   </style>
 </head>
 
@@ -3142,23 +3323,43 @@
   </section>
 
 
-  <!-- SSR 隱藏籤動畫 -->
+  <!-- SSR / UR 隱藏喜籤動畫：內容由 hiddenBlessings 自動帶入 -->
   <div id="ssrOverlay" class="ssr-overlay" aria-hidden="true">
     <div class="ssr-burst"></div>
     <div class="ssr-panel">
-      <div class="ssr-badge">SSR HIDDEN FORTUNE</div>
-      <div class="ssr-title">天選嘉賓</div>
-      <div class="ssr-subtitle">
-        ✨ 恭喜抽到隱藏喜籤 ✨<br>
-        婚禮的幸運星，<br>
-        記得截圖傳到官方line給我們喔。
-      </div>
+      <div id="ssrBadge" class="ssr-badge"></div>
+      <div id="ssrTitle" class="ssr-title"></div>
+      <div id="ssrSubtitle" class="ssr-subtitle"></div>
       <button type="button" class="ssr-close" onclick="closeSSRAnimation()">收下好運</button>
     </div>
   </div>
 
 
   <div id="collectionToast" class="collection-toast" aria-hidden="true"></div>
+
+  <!-- 幸福收藏冊完成動畫 -->
+  <div id="collectionCompleteOverlay" class="collection-complete-overlay" aria-hidden="true">
+    <div class="collection-complete-burst"></div>
+    <div class="collection-complete-panel">
+      <div class="collection-complete-badge">HIDDEN COLLECTION COMPLETE</div>
+      <div class="collection-complete-title">幸福收藏冊<br>已完成</div>
+      <div class="collection-complete-slots" aria-hidden="true">
+        <span class="collection-complete-slot"></span>
+        <span class="collection-complete-slot"></span>
+        <span class="collection-complete-slot"></span>
+        <span class="collection-complete-slot"></span>
+        <span class="collection-complete-slot ur"></span>
+      </div>
+      <div class="collection-complete-text">
+        謝謝你，<br>把我們偷偷準備的小驚喜<br>全部都找到了。🤍<br><br>
+        歡迎截圖收藏冊，<br>傳到官方 LINE 跟我們炫耀。
+      </div>
+      <div class="collection-complete-actions">
+        <button type="button" class="collection-complete-close" onclick="closeCollectionCompleteAnimation()">收下這份驚喜</button>
+      </div>
+    </div>
+  </div>
+
 
   <script>
 
@@ -3469,15 +3670,29 @@
       { title:"第 36 籤｜幸福滿分", text:"今天抽到這支籤，<br>表示幸福已經偷偷找到你，<br>接下來請好好收下。" }
     ];
 
+    /* ========= 喜氣小籤系統：隱藏籤資料 / 保底 / 收藏冊 =========
+       所有 SSR、UR 都統一放在 hiddenBlessings 裡。
+       之後要新增隱藏籤，只要新增一筆資料即可。 */
+
     const hiddenBlessings = [
       {
+        id:"beautifulday",
+        rarity:"SSR",
+        title:"隱藏籤｜美好如期 SSR",
+        overlayTitle:"美好如期",
+        text:"願所有等待，<br>最後都能如約而至。<br>願幸福，不早也不晚。",
+        verlayText:"✨ 恭喜抽到隱藏喜籤 ✨<br>願所有期待，<br>都能如期而至。"
+      },
+      {
+        id:"luckyDouble",
         rarity:"SSR",
         title:"隱藏籤｜好運加倍 SSR",
         overlayTitle:"好運加倍",
-          text:"今天開始，<br>所有好運都偷偷乘以二。<br>願你每天都有驚喜。",
+        text:"今天開始，<br>所有好運都偷偷乘以二。<br>願你每天都有驚喜。",
         overlayText:"🍀 恭喜抽到好運加倍籤 ✨<br>今天開始，<br>幸運值 MAX！"
       },
       {
+        id:"happinessRelay",
         rarity:"SSR",
         title:"隱藏籤｜幸福接力 SSR",
         overlayTitle:"幸福接力",
@@ -3485,13 +3700,7 @@
         overlayText:"💐 恭喜抽到幸福接力籤 ✨<br>下一份幸福，<br>說不定正在靠近你喔。"
       },
       {
-        rarity:"SSR",
-        title:"隱藏籤｜甜點守護者 SSR",
-        overlayTitle:"甜點守護者",
-        text:"🍰 今日甜點熱量歸零，<br>請放心多吃一口幸福，<br>甜甜的事也會跟著發生。",
-        overlayText:"🍰 恭喜獲得甜點守護加成 ✨<br>今天吃下的每一口，<br>都會變成明天的小幸運。"
-      },
-      {
+        id:"photoStar",
         rarity:"SSR",
         title:"隱藏籤｜合照主角 SSR",
         overlayTitle:"合照主角",
@@ -3499,6 +3708,7 @@
         overlayText:"📸 今日拍照運滿格 ✨<br>請主動捕捉我們，<br>留下這天最閃亮的一張。"
       },
       {
+        id:"weddingLegend",
         rarity:"UR",
         title:"超隱藏籤｜婚禮傳說 UR",
         overlayTitle:"婚禮傳說",
@@ -3507,15 +3717,28 @@
       }
     ];
 
-    const SSR_STORAGE_KEY = "timAriesSsrCounter";
-    const UR_STORAGE_KEY = "timAriesUrCounter";
-    let ssrCounter = Number(localStorage.getItem(SSR_STORAGE_KEY) || 0);
-    let urCounter = Number(localStorage.getItem(UR_STORAGE_KEY) || 0);
+    const DRAW_RATE = {
+      ur:0.015,       // 1.5%
+      ssr:0.07,      // 7%
+      ssrPity:14,    // 15 抽保底 SSR
+      urPity:34      // 35 抽保底 UR
+    };
+
+    const STORAGE_KEYS = {
+      ssrCounter:"timAriesSsrCounter",
+      urCounter:"timAriesUrCounter",
+      collection:"timAriesHiddenCollection"
+    };
+
+    let ssrCounter = Number(localStorage.getItem(STORAGE_KEYS.ssrCounter) || 0);
+    let urCounter = Number(localStorage.getItem(STORAGE_KEYS.urCounter) || 0);
     let latestHiddenBlessing = null;
 
+    const COLLECTION_ORDER = hiddenBlessings.map(item => item.id);
+
     function saveHiddenCounters() {
-      localStorage.setItem(SSR_STORAGE_KEY, String(ssrCounter));
-      localStorage.setItem(UR_STORAGE_KEY, String(urCounter));
+      localStorage.setItem(STORAGE_KEYS.ssrCounter, String(ssrCounter));
+      localStorage.setItem(STORAGE_KEYS.urCounter, String(urCounter));
     }
 
     function getHiddenByRarity(rarity) {
@@ -3523,20 +3746,38 @@
       return pool[randomInt(0, pool.length - 1)];
     }
 
-    const COLLECTION_STORAGE_KEY = "timAriesHiddenCollection";
-    const COLLECTION_ORDER = hiddenBlessings.map(item => item.title);
+    function normalizeCollectionItem(value) {
+      const byId = hiddenBlessings.find(item => item.id === value);
+      if (byId) return byId.id;
+
+      const byTitle = hiddenBlessings.find(item => item.title === value);
+      if (byTitle) return byTitle.id;
+
+      return null;
+    }
 
     function getHiddenCollection() {
       try {
-        const saved = JSON.parse(localStorage.getItem(COLLECTION_STORAGE_KEY) || "[]");
-        return Array.isArray(saved) ? saved : [];
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.collection) || "[]");
+        if (!Array.isArray(saved)) return [];
+
+        const normalized = saved
+          .map(normalizeCollectionItem)
+          .filter(Boolean)
+          .filter((id, index, array) => array.indexOf(id) === index);
+
+        if (JSON.stringify(saved) !== JSON.stringify(normalized)) {
+          saveHiddenCollection(normalized);
+        }
+
+        return normalized;
       } catch (e) {
         return [];
       }
     }
 
     function saveHiddenCollection(collection) {
-      localStorage.setItem(COLLECTION_STORAGE_KEY, JSON.stringify(collection));
+      localStorage.setItem(STORAGE_KEYS.collection, JSON.stringify(collection));
     }
 
     function renderHiddenCollection() {
@@ -3549,15 +3790,17 @@
       const collection = getHiddenCollection();
       slots.innerHTML = "";
 
-      COLLECTION_ORDER.forEach(title => {
-        const item = hiddenBlessings.find(hidden => hidden.title === title) || {};
+      COLLECTION_ORDER.forEach(id => {
+        const item = hiddenBlessings.find(hidden => hidden.id === id) || {};
         const slot = document.createElement("span");
         slot.className = "collection-slot";
-        if (collection.includes(title)) {
+
+        if (collection.includes(id)) {
           slot.classList.add("collected");
           if (item.rarity === "UR") slot.classList.add("ur-collected");
-          slot.title = item.overlayTitle || item.title;
+          slot.title = item.overlayTitle || item.title || "";
         }
+
         slots.appendChild(slot);
       });
 
@@ -3569,12 +3812,13 @@
       }
 
       count.textContent = `已收藏 ${collection.length} / ${COLLECTION_ORDER.length}`;
-      const lastTitle = collection[collection.length - 1];
-      const lastItem = hiddenBlessings.find(item => item.title === lastTitle);
+
+      const lastId = collection[collection.length - 1];
+      const lastItem = hiddenBlessings.find(item => item.id === lastId);
       latest.textContent = lastItem ? `✨ 已收藏「${lastItem.overlayTitle || lastItem.title}」` : "";
 
       if (collection.length >= COLLECTION_ORDER.length) {
-        hint.innerHTML = "🎉 Hidden Collection Complete<br>謝謝你，把我們偷偷準備的小驚喜都找到了。";
+        hint.innerHTML = "👑 Hidden Collection Complete<br>謝謝你，把我們偷偷準備的小驚喜都找到了。";
       } else {
         hint.textContent = "再碰碰運氣，也許下一張就會解鎖新的驚喜。";
       }
@@ -3583,9 +3827,11 @@
     function showCollectionToast(message) {
       const toast = document.getElementById("collectionToast");
       if (!toast) return;
+
       toast.innerHTML = message;
       toast.classList.add("show");
       toast.setAttribute("aria-hidden", "false");
+
       clearTimeout(showCollectionToast.timer);
       showCollectionToast.timer = setTimeout(() => {
         toast.classList.remove("show");
@@ -3593,29 +3839,65 @@
       }, 2200);
     }
 
+    function showCollectionCompleteAnimation() {
+      const overlay = document.getElementById("collectionCompleteOverlay");
+      if (!overlay) return;
+
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+      overlay.querySelectorAll(".collection-complete-confetti").forEach(el => el.remove());
+
+      for (let i = 0; i < 58; i++) {
+        const piece = document.createElement("span");
+        piece.className = "ssr-confetti collection-complete-confetti";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.animationDelay = (Math.random() * 1.0) + "s";
+        piece.style.animationDuration = (2.4 + Math.random() * 1.6) + "s";
+        piece.style.transform = `rotate(${Math.random() * 180}deg)`;
+        piece.style.background = Math.random() > 0.72 ? "#b885ff" : (Math.random() > 0.42 ? "#f0d894" : "#fff2c8");
+        overlay.appendChild(piece);
+      }
+
+      setTimeout(() => {
+        overlay.querySelectorAll(".collection-complete-confetti").forEach(el => el.remove());
+      }, 4800);
+    }
+
+    function closeCollectionCompleteAnimation() {
+      const overlay = document.getElementById("collectionCompleteOverlay");
+      if (!overlay) return;
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+
     function updateHiddenCollection(blessing) {
-      if (!blessing || !blessing.title) {
+      if (!blessing || !blessing.id) {
         renderHiddenCollection();
-        return;
+        return false;
       }
 
       const collection = getHiddenCollection();
-      const isNew = !collection.includes(blessing.title);
+      const wasComplete = collection.length >= COLLECTION_ORDER.length;
+      const isNew = !collection.includes(blessing.id);
+      let isNowComplete = false;
 
       if (isNew) {
-        collection.push(blessing.title);
+        collection.push(blessing.id);
         saveHiddenCollection(collection);
         showCollectionToast(`✨ NEW COLLECTION<br>${blessing.overlayTitle || blessing.title}<br>已加入幸福收藏冊`);
+        isNowComplete = collection.length >= COLLECTION_ORDER.length;
       } else {
         showCollectionToast(`✨ 已收藏<br>${blessing.overlayTitle || blessing.title}<br>這張喜籤已經收錄囉`);
       }
 
       renderHiddenCollection();
+
+      return !wasComplete && isNowComplete;
     }
 
     function drawBlessing() {
-      const shouldUseUrGuarantee = urCounter >= 34;
-      const shouldUseSsrGuarantee = ssrCounter >= 14;
+      const shouldUseUrGuarantee = urCounter >= DRAW_RATE.urPity;
+      const shouldUseSsrGuarantee = ssrCounter >= DRAW_RATE.ssrPity;
       const roll = Math.random();
 
       // 35 抽 UR 保底：連續 34 次沒有 UR，第 35 次必出 UR
@@ -3624,8 +3906,8 @@
         ssrCounter = 0;
         saveHiddenCounters();
         return {
-          blessing: getHiddenByRarity("UR"),
-          isHidden: true
+          blessing:getHiddenByRarity("UR"),
+          isHidden:true
         };
       }
 
@@ -3635,29 +3917,29 @@
         urCounter++;
         saveHiddenCounters();
         return {
-          blessing: getHiddenByRarity("SSR"),
-          isHidden: true
+          blessing:getHiddenByRarity("SSR"),
+          isHidden:true
         };
       }
 
-      // 平常抽卡：1.5% UR、7% SSR
-      if (roll < 0.015) {
+      // 平常抽卡：1.5% UR、7% SSR、91.5% 一般喜氣小籤
+      if (roll < DRAW_RATE.ur) {
         urCounter = 0;
         ssrCounter = 0;
         saveHiddenCounters();
         return {
-          blessing: getHiddenByRarity("UR"),
-          isHidden: true
+          blessing:getHiddenByRarity("UR"),
+          isHidden:true
         };
       }
 
-      if (roll < 0.085) {
+      if (roll < DRAW_RATE.ur + DRAW_RATE.ssr) {
         ssrCounter = 0;
         urCounter++;
         saveHiddenCounters();
         return {
-          blessing: getHiddenByRarity("SSR"),
-          isHidden: true
+          blessing:getHiddenByRarity("SSR"),
+          isHidden:true
         };
       }
 
@@ -3666,8 +3948,8 @@
       saveHiddenCounters();
 
       return {
-        blessing: weddingBlessings[randomInt(0, weddingBlessings.length - 1)],
-        isHidden: false
+        blessing:weddingBlessings[randomInt(0, weddingBlessings.length - 1)],
+        isHidden:false
       };
     }
 
@@ -3677,14 +3959,14 @@
 
       const hiddenData = latestHiddenBlessing || {};
       const rarity = hiddenData.rarity || "SSR";
-      const badge = overlay.querySelector(".ssr-badge");
-      const title = overlay.querySelector(".ssr-title");
-      const subtitle = overlay.querySelector(".ssr-subtitle");
+      const badge = document.getElementById("ssrBadge");
+      const title = document.getElementById("ssrTitle");
+      const subtitle = document.getElementById("ssrSubtitle");
 
       if (badge) badge.textContent = `${rarity} HIDDEN FORTUNE`;
-      if (title) title.textContent = hiddenData.overlayTitle || hiddenData.title || "天選嘉賓";
+      if (title) title.textContent = hiddenData.overlayTitle || hiddenData.title || "隱藏喜籤";
       if (subtitle) {
-        subtitle.innerHTML = hiddenData.overlayText || hiddenData.text || "✨ 恭喜抽到隱藏喜籤 ✨<br>記得截圖傳到官方line給我們喔。";
+        subtitle.innerHTML = hiddenData.overlayText || hiddenData.text || "✨ 恭喜抽到隱藏喜籤 ✨<br>記得截圖傳到官方 LINE 給我們喔。";
       }
 
       overlay.classList.toggle("ur-mode", rarity === "UR");
@@ -3729,6 +4011,7 @@
     }
 
     let currentGuestName = "Guest";
+    let latestCollectionCompleted = false;
 
     function randomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -3748,9 +4031,9 @@
       const hiddenRarity = isHiddenBlessing ? (blessing.rarity || "SSR") : "";
       latestHiddenBlessing = isHiddenBlessing ? blessing : null;
 
-      if (isHiddenBlessing) {
-        updateHiddenCollection(blessing);
-      } else {
+      const collectionJustCompleted = isHiddenBlessing ? updateHiddenCollection(blessing) : false;
+      latestCollectionCompleted = collectionJustCompleted;
+      if (!isHiddenBlessing) {
         renderHiddenCollection();
       }
 
@@ -3778,14 +4061,18 @@
 
     function openFortuneFromInvite() {
       const isHidden = setupWeddingCard(currentGuestName);
+      const completed = latestCollectionCompleted;
       showPage("fortunePage");
       if (isHidden) setTimeout(showSSRAnimation, 220);
+      if (completed) setTimeout(showCollectionCompleteAnimation, isHidden ? 1650 : 420);
     }
 
     function drawRandomWeddingCard() {
       const isHidden = setupWeddingCard(currentGuestName);
+      const completed = latestCollectionCompleted;
       showPage("fortunePage");
       if (isHidden) setTimeout(showSSRAnimation, 220);
+      if (completed) setTimeout(showCollectionCompleteAnimation, isHidden ? 1650 : 420);
     }
 
     function showInvite() {
