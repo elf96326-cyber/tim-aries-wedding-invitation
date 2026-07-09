@@ -2937,6 +2937,12 @@
     let bgMusicStarted = false;
     let audioContextForEffects = null;
 
+    const BG_NORMAL_VOLUME = 0.34;  // 平常背景音樂音量
+    const BG_DUCK_VOLUME = 0.06;    // 抽籤時背景音樂自動降低到這裡
+    const BG_SSR_VOLUME = 0.02;     // SSR 時背景音樂幾乎退到背景
+    let bgDuckTimer = null;
+    let audioFadeToken = 0;
+
     function getEffectAudioContext(){
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       if (!AudioContextClass) return null;
@@ -2957,15 +2963,22 @@
       btn.setAttribute("aria-label", isPlaying ? "關閉背景音樂" : "開啟背景音樂");
     }
 
-    function fadeAudioTo(audio, targetVolume, duration = 1600){
+    function fadeAudioTo(audio, targetVolume, duration = 1200){
       if (!audio) return;
-      const startVolume = audio.volume || 0;
+
+      const token = ++audioFadeToken;
+      const startVolume = Number.isFinite(audio.volume) ? audio.volume : 0;
       const startTime = performance.now();
 
       function step(now){
+        if (token !== audioFadeToken) return;
+
         const progress = Math.min(1, (now - startTime) / duration);
         audio.volume = startVolume + (targetVolume - startVolume) * progress;
-        if (progress < 1) requestAnimationFrame(step);
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
       }
 
       requestAnimationFrame(step);
@@ -2980,7 +2993,7 @@
         .then(() => {
           bgMusicStarted = true;
           updateMusicButton(true);
-          fadeAudioTo(music, 0.32, 1800);
+          fadeAudioTo(music, BG_NORMAL_VOLUME, 1800);
         })
         .catch(() => {
           updateMusicButton(false);
@@ -2994,51 +3007,104 @@
       if (music.paused) {
         playBgMusic();
       } else {
+        clearTimeout(bgDuckTimer);
         fadeAudioTo(music, 0, 600);
         setTimeout(() => {
           music.pause();
+          bgMusicStarted = false;
           updateMusicButton(false);
         }, 620);
       }
     }
 
+    function duckBgMusic(options = {}){
+      const music = document.getElementById("bgMusic");
+      if (!music || music.paused || !bgMusicStarted) return;
+
+      const duckVolume = options.duckVolume ?? BG_DUCK_VOLUME;
+      const hold = options.hold ?? 900;
+      const downDuration = options.downDuration ?? 180;
+      const upDuration = options.upDuration ?? 1200;
+
+      clearTimeout(bgDuckTimer);
+
+      fadeAudioTo(music, duckVolume, downDuration);
+
+      bgDuckTimer = setTimeout(() => {
+        const latestMusic = document.getElementById("bgMusic");
+        if (!latestMusic || latestMusic.paused || !bgMusicStarted) return;
+        fadeAudioTo(latestMusic, BG_NORMAL_VOLUME, upDuration);
+      }, hold);
+    }
+
     function playDrawEffect(){
+      duckBgMusic({
+        duckVolume: BG_DUCK_VOLUME,
+        hold: 950,
+        downDuration: 140,
+        upDuration: 1050
+      });
+
       const ctx = getEffectAudioContext();
       if (!ctx) return;
 
       const now = ctx.currentTime;
       const gain = ctx.createGain();
       gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+      gain.gain.exponentialRampToValueAtTime(0.34, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.52);
       gain.connect(ctx.destination);
 
       const osc1 = ctx.createOscillator();
       osc1.type = "sine";
-      osc1.frequency.setValueAtTime(620, now);
-      osc1.frequency.exponentialRampToValueAtTime(980, now + 0.18);
+      osc1.frequency.setValueAtTime(560, now);
+      osc1.frequency.exponentialRampToValueAtTime(980, now + 0.20);
       osc1.connect(gain);
       osc1.start(now);
-      osc1.stop(now + 0.42);
+      osc1.stop(now + 0.52);
 
       const osc2 = ctx.createOscillator();
       osc2.type = "triangle";
-      osc2.frequency.setValueAtTime(1240, now + 0.05);
-      osc2.frequency.exponentialRampToValueAtTime(820, now + 0.30);
+      osc2.frequency.setValueAtTime(1320, now + 0.05);
+      osc2.frequency.exponentialRampToValueAtTime(780, now + 0.36);
       osc2.connect(gain);
       osc2.start(now + 0.05);
-      osc2.stop(now + 0.36);
+      osc2.stop(now + 0.46);
+
+      const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 0.32, ctx.sampleRate);
+      const data = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+      }
+
+      const noise = ctx.createBufferSource();
+      const noiseGain = ctx.createGain();
+      noise.buffer = noiseBuffer;
+      noiseGain.gain.setValueAtTime(0.0001, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.10, now + 0.03);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+      noise.connect(noiseGain);
+      noiseGain.connect(ctx.destination);
+      noise.start(now);
+      noise.stop(now + 0.34);
     }
 
     function playSSREffect(){
+      duckBgMusic({
+        duckVolume: BG_SSR_VOLUME,
+        hold: 2600,
+        downDuration: 120,
+        upDuration: 1800
+      });
+
       const ctx = getEffectAudioContext();
       if (!ctx) return;
 
       const now = ctx.currentTime;
       const master = ctx.createGain();
       master.gain.setValueAtTime(0.0001, now);
-      master.gain.exponentialRampToValueAtTime(0.22, now + 0.04);
-      master.gain.exponentialRampToValueAtTime(0.0001, now + 1.35);
+      master.gain.exponentialRampToValueAtTime(0.34, now + 0.04);
+      master.gain.exponentialRampToValueAtTime(0.0001, now + 1.55);
       master.connect(ctx.destination);
 
       [523.25, 659.25, 783.99, 1046.5].forEach((freq, index) => {
@@ -3049,27 +3115,27 @@
         osc.type = "sine";
         osc.frequency.setValueAtTime(freq, t);
         gain.gain.setValueAtTime(0.0001, t);
-        gain.gain.exponentialRampToValueAtTime(0.22, t + 0.03);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+        gain.gain.exponentialRampToValueAtTime(0.30, t + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.62);
 
         osc.connect(gain);
         gain.connect(master);
         osc.start(t);
-        osc.stop(t + 0.62);
+        osc.stop(t + 0.68);
       });
 
       const sparkle = ctx.createOscillator();
       const sparkleGain = ctx.createGain();
       sparkle.type = "triangle";
       sparkle.frequency.setValueAtTime(1568, now + 0.45);
-      sparkle.frequency.exponentialRampToValueAtTime(2093, now + 1.05);
+      sparkle.frequency.exponentialRampToValueAtTime(2093, now + 1.10);
       sparkleGain.gain.setValueAtTime(0.0001, now + 0.45);
-      sparkleGain.gain.exponentialRampToValueAtTime(0.15, now + 0.50);
-      sparkleGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.20);
+      sparkleGain.gain.exponentialRampToValueAtTime(0.26, now + 0.50);
+      sparkleGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.30);
       sparkle.connect(sparkleGain);
       sparkleGain.connect(master);
       sparkle.start(now + 0.45);
-      sparkle.stop(now + 1.25);
+      sparkle.stop(now + 1.35);
     }
 
     window.history.scrollRestoration = "manual";
