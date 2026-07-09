@@ -2238,7 +2238,159 @@
       }
     }
 
-  </style>
+
+    /* ========= 手機按鈕最終修正：避免透明層 / iframe 蓋住按鈕 ========= */
+    .page{
+      isolation:isolate;
+    }
+
+    .page:not(.active){
+      display:none !important;
+      pointer-events:none !important;
+      z-index:-1 !important;
+    }
+
+    .page.active{
+      display:flex !important;
+      pointer-events:auto !important;
+      z-index:50 !important;
+    }
+
+    #invitePage.active,
+    #fortunePage.active{
+      z-index:60 !important;
+    }
+
+    .invite-scroll,
+    .invite-paper,
+    .invite-content,
+    .keepsake-entry,
+    .fortune-wrap,
+    .fortune-shell,
+    .fortune-card,
+    .fortune-actions{
+      position:relative;
+      pointer-events:auto !important;
+    }
+
+    .invite-content{ z-index:20 !important; }
+    .keepsake-entry{ z-index:30 !important; overflow:visible; }
+    .fortune-actions{ z-index:80 !important; }
+
+    button.ghost-button{
+      position:relative !important;
+      z-index:999 !important;
+      pointer-events:auto !important;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+      cursor:pointer;
+    }
+
+    button.ghost-button span{
+      pointer-events:none !important;
+    }
+
+    body::before,
+    body::after,
+    .page::before,
+    .invite-paper::before,
+    .greeting-card::before,
+    .keepsake-entry::before,
+    .keepsake-entry::after,
+    .fortune-shell::before,
+    .fortune-card::before,
+    .fortune-card::after{
+      pointer-events:none !important;
+    }
+
+    @media (max-width:480px){
+      .map-preview iframe{
+        pointer-events:none;
+      }
+    }
+
+  
+
+    /* ========= 真正修正手機點擊座標偏移 =========
+       原本 .page 使用 fixed + 100dvh + 內部 overflow-y:auto，
+       手機瀏覽器網址列收合時容易造成視覺位置與點擊座標不同步。
+       這裡改成：只有 body/window 捲動，page 不再自己捲動。 */
+    html,
+    body{
+      height:auto !important;
+      min-height:100% !important;
+      overflow-x:hidden !important;
+      overflow-y:auto !important;
+      -webkit-text-size-adjust:100%;
+    }
+
+    body{
+      position:relative !important;
+    }
+
+    .page{
+      position:relative !important;
+      inset:auto !important;
+      width:100% !important;
+      min-height:100vh !important;
+      min-height:100svh !important;
+      height:auto !important;
+      overflow:visible !important;
+      -webkit-overflow-scrolling:auto !important;
+      display:none !important;
+      z-index:auto !important;
+    }
+
+    .page.active{
+      display:flex !important;
+      pointer-events:auto !important;
+      z-index:1 !important;
+    }
+
+    #invitePage.active{
+      align-items:flex-start !important;
+    }
+
+    .invite-scroll,
+    .fortune-wrap,
+    .shell{
+      position:relative !important;
+      z-index:2 !important;
+    }
+
+    button,
+    .ghost-button,
+    .keepsake-entry .ghost-button,
+    .fortune-actions .ghost-button{
+      position:relative !important;
+      z-index:20 !important;
+      pointer-events:auto !important;
+      touch-action:manipulation !important;
+    }
+
+    body::before,
+    body::after,
+    .page::before,
+    .invite-paper::before,
+    .greeting-card::before,
+    .keepsake-entry::before,
+    .keepsake-entry::after,
+    .fortune-shell::before,
+    .fortune-card::before,
+    .fortune-card::after{
+      pointer-events:none !important;
+    }
+
+    @media (max-width:480px){
+      .page{
+        padding:20px !important;
+      }
+
+      .map-preview iframe{
+        pointer-events:none !important;
+      }
+    }
+</style>
 </head>
 
 <body>
@@ -2779,6 +2931,31 @@
         }
       }, 32);
     });
+
+    /* 手機 Safari / Chrome 點擊保險：用 JS 再綁一次 touch/click */
+    function bindMobileTap(selector, handler) {
+      document.querySelectorAll(selector).forEach(btn => {
+        if (btn.dataset.tapBound === "1") return;
+        btn.dataset.tapBound = "1";
+
+        btn.addEventListener("touchend", function(e) {
+          e.preventDefault();
+          handler();
+        }, { passive:false });
+
+        btn.addEventListener("click", function(e) {
+          e.preventDefault();
+          handler();
+        });
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      bindMobileTap('.keepsake-entry .ghost-button', openFortuneFromInvite);
+      bindMobileTap('.fortune-actions .ghost-button:nth-child(1)', drawRandomWeddingCard);
+      bindMobileTap('.fortune-actions .ghost-button:nth-child(2)', () => showPage("invitePage"));
+    });
+
   </script>
 </body>
 </html>
