@@ -2365,6 +2365,45 @@
       text-shadow:0 0 18px rgba(240,216,148,.50);
     }
 
+    .fortune-card.ur-card{
+      border-color:rgba(255,244,190,.96) !important;
+      box-shadow:
+        0 0 0 1px rgba(255,244,190,.38),
+        0 0 46px rgba(255,230,150,.58),
+        0 0 80px rgba(168,92,255,.22),
+        0 24px 72px rgba(20,5,5,.42),
+        inset 0 1px 0 rgba(255,255,255,.20) !important;
+      animation:urCardGlow 1.1s ease-in-out infinite alternate;
+    }
+
+    .fortune-card.ur-card .blessing-title,
+    .fortune-card.ur-card .card-title,
+    .fortune-card.ur-card .card-heart{
+      color:#fff6c9 !important;
+      text-shadow:
+        0 0 20px rgba(240,216,148,.70),
+        0 0 34px rgba(168,92,255,.34);
+    }
+
+    .ssr-overlay.ur-mode{
+      background:
+        radial-gradient(circle at 50% 34%, rgba(255,240,170,.38), transparent 28%),
+        radial-gradient(circle at 50% 50%, rgba(108,36,120,.50), rgba(28,5,7,.90) 68%);
+    }
+
+    .ssr-overlay.ur-mode .ssr-panel{
+      border-color:rgba(255,244,190,.90);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.16) inset,
+        0 0 48px rgba(240,216,148,.58),
+        0 0 72px rgba(168,92,255,.30),
+        0 30px 88px rgba(0,0,0,.48);
+    }
+
+    .ssr-overlay.ur-mode .ssr-badge{
+      background:linear-gradient(135deg,#fff7c7,#d9b86f,#b885ff,#fff7c7);
+    }
+
     .ssr-overlay{
       position:fixed;
       inset:0;
@@ -2488,6 +2527,11 @@
     @keyframes ssrCardGlow{
       from{ filter:brightness(1); }
       to{ filter:brightness(1.12); }
+    }
+
+    @keyframes urCardGlow{
+      from{ filter:brightness(1) saturate(1); }
+      to{ filter:brightness(1.18) saturate(1.08); }
     }
 
     @keyframes ssrBurst{
@@ -3241,31 +3285,110 @@
     ];
 
     const hiddenBlessings = [
-      { title:"隱藏籤｜天選嘉賓 SSR", text:"✨ 恭喜抽到隱藏喜籤 ✨<br>今天的你，是婚禮的幸運星，<br>願未來一年好運都悄悄跟著你。" }
+      {
+        rarity:"SSR",
+        title:"隱藏籤｜好運加倍 SSR",
+        overlayTitle:"好運加倍",
+          text:"今天開始，<br>所有好運都偷偷乘以二。<br>願你每天都有驚喜。",
+        overlayText:"🍀 恭喜抽到好運加倍籤 ✨<br>今天開始，<br>幸運值 MAX！"
+      },
+      {
+        rarity:"SSR",
+        title:"隱藏籤｜幸福接力 SSR",
+        overlayTitle:"幸福接力",
+        text:"💐 今天見證了我們的幸福，<br>下一份幸福，<br>或許正在前往你的路上。 ✨",
+        overlayText:"💐 恭喜抽到幸福接力籤 ✨<br>下一份幸福，<br>說不定正在靠近你喔。"
+      },
+      {
+        rarity:"SSR",
+        title:"隱藏籤｜甜點守護者 SSR",
+        overlayTitle:"甜點守護者",
+        text:"🍰 今日甜點熱量歸零，<br>請放心多吃一口幸福，<br>甜甜的事也會跟著發生。",
+        overlayText:"🍰 恭喜獲得甜點守護加成 ✨<br>今天吃下的每一口，<br>都會變成明天的小幸運。"
+      },
+      {
+        rarity:"SSR",
+        title:"隱藏籤｜合照主角 SSR",
+        overlayTitle:"合照主角",
+        text:"📸 今天拍照運滿分，<br>不管站哪裡都會很好看，<br>記得找我們一起合照。",
+        overlayText:"📸 今日拍照運滿格 ✨<br>請主動捕捉我們，<br>留下這天最閃亮的一張。"
+      },
+      {
+        rarity:"UR",
+        title:"超隱藏籤｜婚禮傳說 UR",
+        overlayTitle:"婚禮傳說",
+        text:"👑 恭喜抽到傳說級喜籤，<br>今天的你是全場幸運中心，<br>請把這份好運用力收下。",
+        overlayText:"👑 傳說級喜籤出現 ✨<br>你是全站最幸運的人，<br>記得截圖傳到官方 LINE 給我們喔。"
+      }
     ];
 
     const SSR_STORAGE_KEY = "timAriesSsrCounter";
+    const UR_STORAGE_KEY = "timAriesUrCounter";
     let ssrCounter = Number(localStorage.getItem(SSR_STORAGE_KEY) || 0);
+    let urCounter = Number(localStorage.getItem(UR_STORAGE_KEY) || 0);
+    let latestHiddenBlessing = null;
 
-    function saveSsrCounter() {
+    function saveHiddenCounters() {
       localStorage.setItem(SSR_STORAGE_KEY, String(ssrCounter));
+      localStorage.setItem(UR_STORAGE_KEY, String(urCounter));
+    }
+
+    function getHiddenByRarity(rarity) {
+      const pool = hiddenBlessings.filter(item => item.rarity === rarity);
+      return pool[randomInt(0, pool.length - 1)];
     }
 
     function drawBlessing() {
-      const shouldUseGuarantee = ssrCounter >= 19;
-      const shouldHitSSR = shouldUseGuarantee || Math.random() < 0.03;
+      const shouldUseUrGuarantee = urCounter >= 49;
+      const shouldUseSsrGuarantee = ssrCounter >= 19;
+      const roll = Math.random();
 
-      if (shouldHitSSR) {
+      // 50 抽 UR 保底：連續 49 次沒有 UR，第 50 次必出 UR
+      if (shouldUseUrGuarantee) {
+        urCounter = 0;
         ssrCounter = 0;
-        saveSsrCounter();
+        saveHiddenCounters();
         return {
-          blessing: hiddenBlessings[randomInt(0, hiddenBlessings.length - 1)],
+          blessing: getHiddenByRarity("UR"),
+          isHidden: true
+        };
+      }
+
+      // 20 抽 SSR 保底：連續 19 次沒有 SSR/UR，第 20 次必出 SSR
+      if (shouldUseSsrGuarantee) {
+        ssrCounter = 0;
+        urCounter++;
+        saveHiddenCounters();
+        return {
+          blessing: getHiddenByRarity("SSR"),
+          isHidden: true
+        };
+      }
+
+      // 平常抽卡：0.5% UR、3% SSR
+      if (roll < 0.005) {
+        urCounter = 0;
+        ssrCounter = 0;
+        saveHiddenCounters();
+        return {
+          blessing: getHiddenByRarity("UR"),
+          isHidden: true
+        };
+      }
+
+      if (roll < 0.035) {
+        ssrCounter = 0;
+        urCounter++;
+        saveHiddenCounters();
+        return {
+          blessing: getHiddenByRarity("SSR"),
           isHidden: true
         };
       }
 
       ssrCounter++;
-      saveSsrCounter();
+      urCounter++;
+      saveHiddenCounters();
 
       return {
         blessing: weddingBlessings[randomInt(0, weddingBlessings.length - 1)],
@@ -3277,6 +3400,19 @@
       const overlay = document.getElementById("ssrOverlay");
       if (!overlay) return;
 
+      const hiddenData = latestHiddenBlessing || {};
+      const rarity = hiddenData.rarity || "SSR";
+      const badge = overlay.querySelector(".ssr-badge");
+      const title = overlay.querySelector(".ssr-title");
+      const subtitle = overlay.querySelector(".ssr-subtitle");
+
+      if (badge) badge.textContent = `${rarity} HIDDEN FORTUNE`;
+      if (title) title.textContent = hiddenData.overlayTitle || hiddenData.title || "天選嘉賓";
+      if (subtitle) {
+        subtitle.innerHTML = hiddenData.overlayText || hiddenData.text || "✨ 恭喜抽到隱藏喜籤 ✨<br>記得截圖傳到官方line給我們喔。";
+      }
+
+      overlay.classList.toggle("ur-mode", rarity === "UR");
       overlay.classList.add("show");
       overlay.setAttribute("aria-hidden", "false");
 
@@ -3334,13 +3470,17 @@
         playDrawEffect();
       }
 
+      const hiddenRarity = isHiddenBlessing ? (blessing.rarity || "SSR") : "";
+      latestHiddenBlessing = isHiddenBlessing ? blessing : null;
+
       const guestNo = isHiddenBlessing
-        ? "SSR"
+        ? hiddenRarity
         : String(randomInt(1, 99)).padStart(3, "0");
 
       const fortuneCard = document.querySelector(".fortune-card");
       if (fortuneCard) {
         fortuneCard.classList.toggle("ssr-card", isHiddenBlessing);
+        fortuneCard.classList.toggle("ur-card", hiddenRarity === "UR");
       }
 
       document.getElementById("cardGuestName").textContent = name || "Guest";
