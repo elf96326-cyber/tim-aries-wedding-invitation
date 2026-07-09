@@ -2751,6 +2751,39 @@
       color:rgba(244,223,195,.72);
     }
 
+    .collection-reset-wrap{
+      display:none;
+      margin-top:14px;
+      justify-content:center;
+    }
+
+    .hidden-collection.complete .collection-reset-wrap{
+      display:flex;
+    }
+
+    .collection-reset-button{
+      appearance:none;
+      border:1px solid rgba(240,216,148,.34);
+      border-radius:999px;
+      background:rgba(255,244,225,.07);
+      color:#f6dfba;
+      padding:9px 16px 10px;
+      font-family:"LXGW WenKai TC","Noto Serif TC",serif;
+      font-size:12.5px;
+      letter-spacing:.10em;
+      cursor:pointer;
+      box-shadow:0 8px 20px rgba(20,5,5,.16);
+      transition:.25s ease;
+      touch-action:manipulation;
+    }
+
+    .collection-reset-button:hover{
+      color:#fff2d4;
+      border-color:rgba(240,216,148,.58);
+      background:rgba(255,244,225,.12);
+      transform:translateY(-1px);
+    }
+
     .collection-toast{
       position:fixed;
       left:50%;
@@ -2798,6 +2831,11 @@
         width:28px;
         height:28px;
         border-radius:9px;
+      }
+
+      .collection-reset-button{
+        font-size:12px;
+        padding:8px 14px 9px;
       }
     }
 
@@ -3151,6 +3189,9 @@
           <div class="collection-count" id="collectionCount">？？？</div>
           <div class="collection-latest" id="collectionLatest"></div>
           <div class="collection-hint" id="collectionHint">據說，還有幾張只有少數人遇見過……</div>
+          <div class="collection-reset-wrap" id="collectionResetWrap">
+            <button type="button" class="collection-reset-button" onclick="resetHiddenCollection()">🌟 重新蒐集喜籤</button>
+          </div>
         </div>
       </div>
 
@@ -3356,6 +3397,7 @@
       </div>
       <div class="collection-complete-actions">
         <button type="button" class="collection-complete-close" onclick="closeCollectionCompleteAnimation()">收下這份驚喜</button>
+        <button type="button" class="collection-complete-close" onclick="resetHiddenCollection()">🌟 重新蒐集喜籤</button>
       </div>
     </div>
   </div>
@@ -3680,7 +3722,7 @@
         rarity:"SSR",
         title:"隱藏籤｜美好如期 SSR",
         overlayTitle:"美好如期",
-        text:"願所有等待，<br>最後都能如約而至。<br>願幸福，不早也不晚。",
+        text:"🌻 願所有等待，<br>最後都能如約而至。<br>願幸福，不早也不晚。",
         verlayText:"✨ 恭喜抽到隱藏喜籤 ✨<br>願所有期待，<br>都能如期而至。"
       },
       {
@@ -3696,7 +3738,7 @@
         rarity:"SSR",
         title:"隱藏籤｜幸福接力 SSR",
         overlayTitle:"幸福接力",
-        text:"💐 今天見證了我們的幸福，<br>下一份幸福，<br>或許正在前往你的路上。 ✨",
+        text:"💐 今天見證了我們的幸福，<br>下一份幸福，<br>或許正在前往你的路上。 ",
         overlayText:"💐 恭喜抽到幸福接力籤 ✨<br>下一份幸福，<br>說不定正在靠近你喔。"
       },
       {
@@ -3785,9 +3827,12 @@
       const count = document.getElementById("collectionCount");
       const latest = document.getElementById("collectionLatest");
       const hint = document.getElementById("collectionHint");
+      const wrapper = slots ? slots.closest(".hidden-collection") : null;
       if (!slots || !count || !latest || !hint) return;
 
       const collection = getHiddenCollection();
+      const isComplete = collection.length >= COLLECTION_ORDER.length;
+      if (wrapper) wrapper.classList.toggle("complete", isComplete);
       slots.innerHTML = "";
 
       COLLECTION_ORDER.forEach(id => {
@@ -3817,7 +3862,7 @@
       const lastItem = hiddenBlessings.find(item => item.id === lastId);
       latest.textContent = lastItem ? `✨ 已收藏「${lastItem.overlayTitle || lastItem.title}」` : "";
 
-      if (collection.length >= COLLECTION_ORDER.length) {
+      if (isComplete) {
         hint.innerHTML = "👑 Hidden Collection Complete<br>謝謝你，把我們偷偷準備的小驚喜都找到了。";
       } else {
         hint.textContent = "再碰碰運氣，也許下一張就會解鎖新的驚喜。";
@@ -3868,6 +3913,24 @@
       if (!overlay) return;
       overlay.classList.remove("show");
       overlay.setAttribute("aria-hidden", "true");
+    }
+
+    function resetHiddenCollection() {
+      const confirmed = window.confirm("確定要重新開始蒐集幸福收藏冊嗎？\n目前已收藏的隱藏喜籤會清空，保底次數也會重新計算喔。");
+      if (!confirmed) return;
+
+      localStorage.removeItem(STORAGE_KEYS.collection);
+      localStorage.removeItem(STORAGE_KEYS.ssrCounter);
+      localStorage.removeItem(STORAGE_KEYS.urCounter);
+
+      ssrCounter = 0;
+      urCounter = 0;
+      latestCollectionCompleted = false;
+      latestHiddenBlessing = null;
+
+      closeCollectionCompleteAnimation();
+      renderHiddenCollection();
+      showCollectionToast("🌟 幸福收藏冊已重新開始<br>願你再次遇見不同的小驚喜");
     }
 
     function updateHiddenCollection(blessing) {
