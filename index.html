@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>T&A｜莊滿禛心｜電子喜帖</title>
+  <title>莊滿禛心｜電子喜帖</title>
 
   <!-- 字體：上線後會自動載入；若離線預覽，會使用系統襯線字 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2627,7 +2627,181 @@
       }
     }
 
-</style>
+
+    /* ========= 幸福收藏冊 Hidden Collection ========= */
+    .hidden-collection{
+      width:min(92%, 420px);
+      margin:22px auto 0;
+      padding:22px 20px 20px;
+      border-radius:28px;
+      border:1px solid rgba(240,216,148,.22);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,231,181,.12), transparent 38%),
+        rgba(74,20,24,.42);
+      box-shadow:
+        0 16px 42px rgba(20,5,5,.22),
+        inset 0 1px 0 rgba(255,255,255,.07);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hidden-collection::after{
+      content:"36+";
+      position:absolute;
+      right:16px;
+      top:14px;
+      font-family:"Cinzel", serif;
+      font-size:11px;
+      letter-spacing:.14em;
+      color:rgba(240,216,148,.45);
+    }
+
+    .hidden-collection-title{
+      font-family:"LXGW WenKai TC","Noto Serif TC",serif;
+      color:#ffe6b8;
+      font-size:15px;
+      letter-spacing:.14em;
+      margin-bottom:4px;
+    }
+
+    .hidden-collection-subtitle{
+      font-family:"Cinzel", serif;
+      color:#d9b86d;
+      font-size:10px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      margin-bottom:16px;
+    }
+
+    .collection-slots{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:9px;
+      margin:0 auto 13px;
+    }
+
+    .collection-slot{
+      width:30px;
+      height:30px;
+      border-radius:10px;
+      border:1px solid rgba(240,216,148,.24);
+      background:rgba(255,244,225,.06);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .collection-slot.collected{
+      border-color:rgba(240,216,148,.72);
+      background:linear-gradient(145deg, rgba(240,216,148,.86), rgba(181,129,58,.92));
+      box-shadow:
+        0 0 18px rgba(240,216,148,.26),
+        inset 0 1px 0 rgba(255,255,255,.28);
+      animation:collectionStamp .55s ease both;
+    }
+
+    .collection-slot.ur-collected{
+      border-color:rgba(255,244,190,.92);
+      background:linear-gradient(145deg, #fff0a8, #b885ff 55%, #5a2162);
+      box-shadow:
+        0 0 22px rgba(240,216,148,.36),
+        0 0 32px rgba(168,92,255,.26),
+        inset 0 1px 0 rgba(255,255,255,.28);
+    }
+
+    .collection-slot.collected::before{
+      content:"✦";
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#5b1d21;
+      font-size:14px;
+      text-shadow:0 1px 0 rgba(255,255,255,.28);
+    }
+
+    .collection-slot.ur-collected::before{
+      content:"👑";
+      font-size:13px;
+    }
+
+    .collection-count{
+      font-size:13px;
+      letter-spacing:.10em;
+      color:#f4dfc3;
+      line-height:1.7;
+    }
+
+    .collection-latest{
+      margin-top:7px;
+      min-height:20px;
+      font-size:13px;
+      letter-spacing:.08em;
+      color:#f0d894;
+      line-height:1.65;
+    }
+
+    .collection-hint{
+      margin-top:6px;
+      font-size:12.5px;
+      letter-spacing:.07em;
+      line-height:1.65;
+      color:rgba(244,223,195,.72);
+    }
+
+    .collection-toast{
+      position:fixed;
+      left:50%;
+      bottom:26px;
+      transform:translateX(-50%) translateY(18px);
+      z-index:999998;
+      width:min(86vw, 330px);
+      padding:15px 18px;
+      border-radius:22px;
+      border:1px solid rgba(240,216,148,.42);
+      background:rgba(74,20,24,.94);
+      color:#ffe6b8;
+      box-shadow:0 18px 46px rgba(20,5,5,.36);
+      text-align:center;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .35s ease, transform .35s ease;
+      font-size:14px;
+      letter-spacing:.08em;
+      line-height:1.65;
+    }
+
+    .collection-toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @keyframes collectionStamp{
+      from{ transform:scale(.72) rotate(-8deg); opacity:.35; }
+      to{ transform:scale(1) rotate(0); opacity:1; }
+    }
+
+    @media (max-width:480px){
+      .hidden-collection{
+        width:min(94%, 390px);
+        padding:20px 16px 18px;
+        border-radius:24px;
+      }
+
+      .collection-slots{
+        gap:7px;
+      }
+
+      .collection-slot{
+        width:28px;
+        height:28px;
+        border-radius:9px;
+      }
+    }
+
+  </style>
 </head>
 
 <body>
@@ -2781,12 +2955,21 @@
 
         <div class="fortune-actions">
           <button type="button" class="ghost-button" onclick="drawRandomWeddingCard()">
-            <span>再抽一張喜氣小籤 →</span>
+            <span>🍀 再碰碰運氣 →</span>
           </button>
 
           <button type="button" class="ghost-button" onclick="showPage('invitePage')">
             <span>回到邀請函 ↑</span>
           </button>
+        </div>
+
+        <div class="hidden-collection" aria-label="幸福收藏冊">
+          <div class="hidden-collection-title">🌟 幸福收藏冊</div>
+          <div class="hidden-collection-subtitle">Hidden Collection</div>
+          <div class="collection-slots" id="collectionSlots" aria-hidden="true"></div>
+          <div class="collection-count" id="collectionCount">？？？</div>
+          <div class="collection-latest" id="collectionLatest"></div>
+          <div class="collection-hint" id="collectionHint">據說，還有幾張只有少數人遇見過……</div>
         </div>
       </div>
 
@@ -2974,6 +3157,8 @@
     </div>
   </div>
 
+
+  <div id="collectionToast" class="collection-toast" aria-hidden="true"></div>
 
   <script>
 
@@ -3338,12 +3523,102 @@
       return pool[randomInt(0, pool.length - 1)];
     }
 
+    const COLLECTION_STORAGE_KEY = "timAriesHiddenCollection";
+    const COLLECTION_ORDER = hiddenBlessings.map(item => item.title);
+
+    function getHiddenCollection() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(COLLECTION_STORAGE_KEY) || "[]");
+        return Array.isArray(saved) ? saved : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveHiddenCollection(collection) {
+      localStorage.setItem(COLLECTION_STORAGE_KEY, JSON.stringify(collection));
+    }
+
+    function renderHiddenCollection() {
+      const slots = document.getElementById("collectionSlots");
+      const count = document.getElementById("collectionCount");
+      const latest = document.getElementById("collectionLatest");
+      const hint = document.getElementById("collectionHint");
+      if (!slots || !count || !latest || !hint) return;
+
+      const collection = getHiddenCollection();
+      slots.innerHTML = "";
+
+      COLLECTION_ORDER.forEach(title => {
+        const item = hiddenBlessings.find(hidden => hidden.title === title) || {};
+        const slot = document.createElement("span");
+        slot.className = "collection-slot";
+        if (collection.includes(title)) {
+          slot.classList.add("collected");
+          if (item.rarity === "UR") slot.classList.add("ur-collected");
+          slot.title = item.overlayTitle || item.title;
+        }
+        slots.appendChild(slot);
+      });
+
+      if (collection.length === 0) {
+        count.textContent = "？？？";
+        latest.textContent = "";
+        hint.textContent = "據說，還有幾張只有少數人遇見過……";
+        return;
+      }
+
+      count.textContent = `已收藏 ${collection.length} / ${COLLECTION_ORDER.length}`;
+      const lastTitle = collection[collection.length - 1];
+      const lastItem = hiddenBlessings.find(item => item.title === lastTitle);
+      latest.textContent = lastItem ? `✨ 已收藏「${lastItem.overlayTitle || lastItem.title}」` : "";
+
+      if (collection.length >= COLLECTION_ORDER.length) {
+        hint.innerHTML = "🎉 Hidden Collection Complete<br>謝謝你，把我們偷偷準備的小驚喜都找到了。";
+      } else {
+        hint.textContent = "再碰碰運氣，也許下一張就會解鎖新的驚喜。";
+      }
+    }
+
+    function showCollectionToast(message) {
+      const toast = document.getElementById("collectionToast");
+      if (!toast) return;
+      toast.innerHTML = message;
+      toast.classList.add("show");
+      toast.setAttribute("aria-hidden", "false");
+      clearTimeout(showCollectionToast.timer);
+      showCollectionToast.timer = setTimeout(() => {
+        toast.classList.remove("show");
+        toast.setAttribute("aria-hidden", "true");
+      }, 2200);
+    }
+
+    function updateHiddenCollection(blessing) {
+      if (!blessing || !blessing.title) {
+        renderHiddenCollection();
+        return;
+      }
+
+      const collection = getHiddenCollection();
+      const isNew = !collection.includes(blessing.title);
+
+      if (isNew) {
+        collection.push(blessing.title);
+        saveHiddenCollection(collection);
+        showCollectionToast(`✨ NEW COLLECTION<br>${blessing.overlayTitle || blessing.title}<br>已加入幸福收藏冊`);
+      } else {
+        showCollectionToast(`✨ 已收藏<br>${blessing.overlayTitle || blessing.title}<br>這張喜籤已經收錄囉`);
+      }
+
+      renderHiddenCollection();
+    }
+
     function drawBlessing() {
-      const shouldUseUrGuarantee = urCounter >= 49;
-      const shouldUseSsrGuarantee = ssrCounter >= 19;
+      const shouldUseUrGuarantee = urCounter >= 34;
+      const shouldUseSsrGuarantee = ssrCounter >= 14;
       const roll = Math.random();
 
-      // 50 抽 UR 保底：連續 49 次沒有 UR，第 50 次必出 UR
+      // 35 抽 UR 保底：連續 34 次沒有 UR，第 35 次必出 UR
       if (shouldUseUrGuarantee) {
         urCounter = 0;
         ssrCounter = 0;
@@ -3354,7 +3629,7 @@
         };
       }
 
-      // 20 抽 SSR 保底：連續 19 次沒有 SSR/UR，第 20 次必出 SSR
+      // 15 抽 SSR 保底：連續 14 次沒有 SSR/UR，第 15 次必出 SSR
       if (shouldUseSsrGuarantee) {
         ssrCounter = 0;
         urCounter++;
@@ -3365,8 +3640,8 @@
         };
       }
 
-      // 平常抽卡：0.5% UR、3% SSR
-      if (roll < 0.005) {
+      // 平常抽卡：1.5% UR、7% SSR
+      if (roll < 0.015) {
         urCounter = 0;
         ssrCounter = 0;
         saveHiddenCounters();
@@ -3376,7 +3651,7 @@
         };
       }
 
-      if (roll < 0.035) {
+      if (roll < 0.085) {
         ssrCounter = 0;
         urCounter++;
         saveHiddenCounters();
@@ -3472,6 +3747,12 @@
 
       const hiddenRarity = isHiddenBlessing ? (blessing.rarity || "SSR") : "";
       latestHiddenBlessing = isHiddenBlessing ? blessing : null;
+
+      if (isHiddenBlessing) {
+        updateHiddenCollection(blessing);
+      } else {
+        renderHiddenCollection();
+      }
 
       const guestNo = isHiddenBlessing
         ? hiddenRarity
@@ -3578,6 +3859,8 @@
     });
 
     window.addEventListener("DOMContentLoaded", () => {
+      renderHiddenCollection();
+
       const loading = document.getElementById("loadingScreen");
       const bar = document.getElementById("loadingBar");
       const percentText = document.getElementById("loadingPercent");
